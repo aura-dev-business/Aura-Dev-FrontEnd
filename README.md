@@ -70,6 +70,10 @@ Before starting, ensure you have the following installed:
   ```
 
 #### **5. Push to Your Forked Repository**
+- Add your fork as origin remote:
+  ```sh
+  git remote add origin "https://github.com/murshi-xd/Aura-Dev-FrontEnd.git"
+  ```
 - Push the new branch to your forked repo:
   ```sh
   git push origin "your-branch-name-react-init"
@@ -84,12 +88,12 @@ Before starting, ensure you have the following installed:
 
 ---
 
-### **Keeping Your Fork Up-to-Date**
+### **Keeping Your Fork Up-to-Date** 
 If the original repository gets updated, you should keep your fork in sync:
 
 1. Add the original repository as a remote (only needed once):
    ```sh
-   git remote add upstream https://github.com/original-repo/Aura-Dev-FrontEnd.git
+   git remote add upstream https://github.com/aura-dev-business/Aura-Dev-FrontEnd.git
    ```
 
 2. Fetch the latest changes from the original repo:
