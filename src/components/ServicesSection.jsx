@@ -1,7 +1,59 @@
-import React from 'react';
-import { services } from '../constants/data';
+import React, { useState, useEffect } from 'react';
 
 const ServicesSection = () => {
+  const [services, setServices] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+
+  useEffect(() => {
+    const fetchServices = async () => {
+      try {
+        const response = await fetch('http://localhost:8080/api/services', {
+          method: 'GET',
+          headers: {
+            'Accept': 'application/json'
+          }
+        });
+        
+        if (!response.ok) {
+          const errorData = await response.json().catch(() => null);
+          throw new Error(errorData?.message || `HTTP error! status: ${response.status}`);
+
+        }
+        
+        const data = await response.json();
+        setServices(data);
+      } catch (err) {
+        console.error('Error fetching services:', err);
+        setError(err.message || 'Failed to fetch services. Please check if the server is running.');
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchServices();
+  }, []);
+
+  if (loading) {
+    return (
+      <section className="py-20 bg-white" id="services">
+        <div className="max-w-7xl mx-auto px-4 text-center">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto"></div>
+        </div>
+      </section>
+    );
+  }
+
+  if (error) {
+    return (
+      <section className="py-20 bg-white" id="services">
+        <div className="max-w-7xl mx-auto px-4 text-center text-red-600">
+          Error: {error}
+        </div>
+      </section>
+    );
+  }
+
   return (
     <section className="py-20 bg-white" id="services">
       <div className="max-w-7xl mx-auto px-4">
@@ -13,21 +65,17 @@ const ServicesSection = () => {
         </div>
 
         <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
-          {services.map((service, index) => (
-            <div key={index} className="bg-white rounded-xl shadow-lg hover:shadow-xl transition-all overflow-hidden">
+          {services.map((service) => (
+            <div key={service.id} className="bg-white rounded-xl shadow-lg hover:shadow-xl transition-all overflow-hidden">
               <div className="h-48 overflow-hidden">
                 <img
-                  src={service.image}
-                  alt={service.title}
+                  src={service.imageUrl}
+                  alt={service.name}
                   className="w-full h-full object-cover"
                 />
               </div>
               <div className="p-6">
-                {/* Icon Section (using background circle) */}
-                <div className="w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center mb-4">
-                  <i className={`fas ${service.icon} text-blue-600 text-xl`}></i>
-                </div>
-                <h3 className="text-xl font-bold text-gray-900 mb-3">{service.title}</h3>
+                <h3 className="text-xl font-bold text-gray-900 mb-3">{service.name}</h3>
                 <p className="text-gray-600 mb-4">{service.description}</p>
                 <a href="#" className="text-blue-600 font-medium flex items-center hover:text-blue-700 cursor-pointer">
                   Learn More <i className="fas fa-arrow-right ml-2"></i>
