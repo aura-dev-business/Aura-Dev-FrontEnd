@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 
 const Navigation = () => {
   return (
@@ -6,12 +7,28 @@ const Navigation = () => {
       <div className="max-w-7xl mx-auto flex items-center justify-between">
         <div className="text-2xl font-bold text-indigo-600">AuraDev</div>
         <ul className="hidden md:flex space-x-6 text-gray-700">
-          <li className="hover:text-indigo-600 cursor-pointer">Home</li>
-          <li className="hover:text-indigo-600 cursor-pointer">Services</li>
-          <li className="hover:text-indigo-600 cursor-pointer">Projects</li>
-          <li className="hover:text-indigo-600 cursor-pointer">Why Us</li>
-          <li className="hover:text-indigo-600 cursor-pointer">Testimonials</li>
-          <li className="hover:text-indigo-600 cursor-pointer">Contact</li>
+          <li>
+            <Link to="/">
+              <button className="hover:text-indigo-600 cursor-pointer">Home</button>
+            </Link>
+          </li>
+          <li>
+            <Link to="/Services">
+              <button className="hover:text-indigo-600 cursor-pointer">Services</button>
+            </Link>
+          </li>
+          <li>
+            <button className="hover:text-indigo-600 cursor-pointer">Projects</button>
+          </li>
+          <li>
+            <button className="hover:text-indigo-600 cursor-pointer">Why Us</button>
+          </li>
+          <li>
+            <button className="hover:text-indigo-600 cursor-pointer">Testimonials</button>
+          </li>
+          <li>
+            <button className="hover:text-indigo-600 cursor-pointer">Contact</button>
+          </li>
         </ul>
         <button className="md:hidden text-gray-700 focus:outline-none">
           <svg className="w-6 h-6" fill="none" stroke="currentColor" strokeWidth="2"
