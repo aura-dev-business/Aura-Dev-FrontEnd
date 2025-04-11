@@ -1,0 +1,142 @@
+import { useState } from 'react';
+import { Send, Mail, Phone, MapPin } from 'lucide-react';
+
+export default function ContactComponent() {
+  const [formData, setFormData] = useState({
+    name: '',
+    email: '',
+    message: ''
+  });
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [submitted, setSubmitted] = useState(false);
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFormData(prev => ({ ...prev, [name]: value }));
+  };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    setIsSubmitting(true);
+
+    // Simulate form submission
+    setTimeout(() => {
+      setIsSubmitting(false);
+      setSubmitted(true);
+      setFormData({ name: '', email: '', message: '' });
+
+      // Reset success message after 3 seconds
+      setTimeout(() => setSubmitted(false), 3000);
+    }, 1000);
+  };
+
+  return (
+    <div className="bg-gradient-to-br from-gray-50 to-gray-100 rounded-2xl shadow-lg p-10">
+      <div className="max-w-7xl mx-auto ">
+      <div className="flex justify-center mb-10">
+  <h3 className="capitalize text-5xl font-bold text-indigo-900 text-center transition-transform duration-300 hover:scale-105 hover:text-red-700">
+    Get in touch
+  </h3>
+</div>
+
+
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-10">
+          {/* Contact Info Section */}
+          <div className="bg-white p-6 rounded-xl shadow space-y-8">
+            <div className="flex items-start space-x-3">
+              <div className="bg-indigo-100 p-2 rounded-full text-black">
+                <Mail size={16} />
+              </div>
+              <div>
+                <p className="text-xs font-medium text-black">Email</p>
+                <a href="mailto:auradevbusiness@gmail.com" className="text-sm text-black hover:text-indigo-800 transition-colors">
+                  auradevbusiness@gmail.com
+                </a>
+              </div>
+            </div>
+
+            <div className="flex items-start space-x-3">
+              <div className="bg-indigo-100 p-2 rounded-full text-black">
+                <Phone size={16} />
+              </div>
+              <div>
+                <p className="text-xs font-medium text-black">Phone</p>
+                <a href="tel:+919188296027" className="text-sm text-black hover:text-indigo-800 transition-colors">
+                  (+91) 9188296027
+                </a>
+              </div>
+            </div>
+
+            <div className="flex items-start space-x-3">
+              <div className="bg-indigo-100 p-2 rounded-full text-black">
+                <MapPin size={16} />
+              </div>
+              <div>
+                <p className="text-xs font-medium text-gray-500">Address</p>
+                <p className="text-sm text-gray-700">
+                  Bangalore, Karnataka, India
+                </p>
+              </div>
+            </div>
+          </div>
+
+          {/* Contact Form Section */}
+          <div className="bg-white p-6 rounded-xl shadow">
+            {submitted ? (
+              <div className="bg-green-50 border border-green-200 rounded-lg p-4 text-center">
+                <p className="text-green-700 text-sm">Thanks for reaching out! We'll be in touch soon.</p>
+              </div>
+            ) : (
+              <form onSubmit={handleSubmit} className="space-y-3">
+                <input
+                  type="text"
+                  name="name"
+                  value={formData.name}
+                  onChange={handleChange}
+                  placeholder="Your name"
+                  className="w-full px-3 py-2 text-sm bg-white border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
+                  required
+                />
+
+                <input
+                  type="email"
+                  name="email"
+                  value={formData.email}
+                  onChange={handleChange}
+                  placeholder="Email address"
+                  className="w-full px-3 py-2 text-sm bg-white border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
+                  required
+                />
+
+                <textarea
+                  name="message"
+                  value={formData.message}
+                  onChange={handleChange}
+                  placeholder="Your message"
+                  rows="2"
+                  className="w-full px-3 py-2 text-sm bg-white border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent resize-none"
+                  required
+                ></textarea>
+
+                <button
+                  type="submit"
+                  disabled={isSubmitting}
+                  className="w-full bg-gradient-to-br from-red-800 to-red-700 hover:from-red-700 hover:to-red-600 text-white font-medium py-2 px-4 rounded-lg transition-colors flex items-center justify-center space-x-2"
+                >
+                  {isSubmitting ? (
+                    <span>Sending...</span>
+                  ) : (
+                    <>
+                      <span>Send message</span>
+                      <Send size={16} />
+                    </>
+                  )}
+                </button>
+              </form>
+            )}
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}

@@ -12,14 +12,13 @@ const Services = () => {
     <>
       <Navigation />
 
-      <HeroSection_services/>
+
 
       <ServicesSection_services/>
 
 
 
       {/* Process Section */}
-      <Process_section />
 
 
     </>
