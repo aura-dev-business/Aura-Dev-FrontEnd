@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { Send, Mail, Phone, MapPin } from 'lucide-react';
+import { motion } from 'framer-motion';
 
 export default function ContactComponent() {
   const [formData, setFormData] = useState({
@@ -19,30 +20,41 @@ export default function ContactComponent() {
     e.preventDefault();
     setIsSubmitting(true);
 
-    // Simulate form submission
     setTimeout(() => {
       setIsSubmitting(false);
       setSubmitted(true);
       setFormData({ name: '', email: '', message: '' });
 
-      // Reset success message after 3 seconds
       setTimeout(() => setSubmitted(false), 3000);
     }, 1000);
   };
 
   return (
-    <div className="bg-gradient-to-br from-gray-50 to-gray-100 rounded-2xl shadow-lg p-10">
+    <motion.div 
+      initial={{ opacity: 0, y: 50 }} 
+      animate={{ opacity: 1, y: 0 }} 
+      transition={{ duration: 0.6, ease: 'easeOut' }}
+      className="bg-gradient-to-br from-gray-50 to-gray-100 rounded-2xl shadow-lg p-10"
+    >
       <div className="max-w-7xl mx-auto ">
-      <div className="flex justify-center mb-10">
-  <h3 className="capitalize text-5xl font-bold text-indigo-900 text-center transition-transform duration-300 hover:scale-105 hover:text-red-700">
-    Get in touch
-  </h3>
-</div>
-
+        <motion.div 
+          initial={{ opacity: 0 }} 
+          animate={{ opacity: 1 }} 
+          transition={{ delay: 0.2 }}
+          className="flex justify-center mb-10"
+        >
+          <h3 className="capitalize text-5xl font-bold text-indigo-900 text-center transition-transform duration-300 hover:scale-105 hover:text-red-700">
+            Get in touch
+          </h3>
+        </motion.div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-10">
-          {/* Contact Info Section */}
-          <div className="bg-white p-6 rounded-xl shadow space-y-8">
+          <motion.div 
+            initial={{ opacity: 0, x: -50 }} 
+            animate={{ opacity: 1, x: 0 }} 
+            transition={{ duration: 0.6 }}
+            className="bg-white p-6 rounded-xl shadow space-y-8"
+          >
             <div className="flex items-start space-x-3">
               <div className="bg-indigo-100 p-2 rounded-full text-black">
                 <Mail size={16} />
@@ -78,16 +90,30 @@ export default function ContactComponent() {
                 </p>
               </div>
             </div>
-          </div>
+          </motion.div>
 
-          {/* Contact Form Section */}
-          <div className="bg-white p-6 rounded-xl shadow">
+          <motion.div 
+            initial={{ opacity: 0, x: 50 }} 
+            animate={{ opacity: 1, x: 0 }} 
+            transition={{ duration: 0.6 }}
+            className="bg-white p-6 rounded-xl shadow"
+          >
             {submitted ? (
-              <div className="bg-green-50 border border-green-200 rounded-lg p-4 text-center">
+              <motion.div 
+                initial={{ opacity: 0 }} 
+                animate={{ opacity: 1 }} 
+                className="bg-green-50 border border-green-200 rounded-lg p-4 text-center"
+              >
                 <p className="text-green-700 text-sm">Thanks for reaching out! We'll be in touch soon.</p>
-              </div>
+              </motion.div>
             ) : (
-              <form onSubmit={handleSubmit} className="space-y-3">
+              <motion.form 
+                onSubmit={handleSubmit} 
+                className="space-y-3"
+                initial={{ opacity: 0 }} 
+                animate={{ opacity: 1 }} 
+                transition={{ delay: 0.2 }}
+              >
                 <input
                   type="text"
                   name="name"
@@ -132,11 +158,11 @@ export default function ContactComponent() {
                     </>
                   )}
                 </button>
-              </form>
+              </motion.form>
             )}
-          </div>
+          </motion.div>
         </div>
       </div>
-    </div>
+    </motion.div>
   );
 }
