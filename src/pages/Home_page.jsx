@@ -9,17 +9,17 @@ import WorkProcess from '../components/WorkProcess';
 import CTASection from '../components/CTASection';
 import Footer from '../components/Footer';
 
+
 const Home = () => {
   return (
     <>
       <Navigation />
       <HeroSection />
       <ServicesSection />
-      <FeaturedProjects />
+      {/*<FeaturedProjects />*/}
       <WhyChooseUs />
       <WorkProcess />
       <CTASection />
-      <Footer />
     </>
   );
 };

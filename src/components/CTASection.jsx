@@ -1,17 +1,22 @@
 import React from "react";
+import { Link } from "react-router-dom";
+import { ArrowRight } from "lucide-react";
 
 const CTASection = () => {
   return (
-    <section className="bg-indigo-600 text-white py-16 text-center">
-      <div className="container mx-auto px-4">
-        <h2 className="text-3xl font-bold mb-4">Ready to Grow Your Business?</h2>
-        <p className="mb-6">Let AuraDev help you build a powerful online presence today.</p>
-        <a
-          href="#contact"
-          className="bg-white text-indigo-600 font-semibold py-2 px-6 rounded hover:bg-gray-100 transition"
+    <section className="py-20 bg-gray-50">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+        <h2 className="text-4xl mb-6">Ready to Transform Your Digital Presence?</h2>
+        <p className="text-xl text-gray-600 mb-8">
+          Let's create something extraordinary together.
+        </p>
+        <Link
+          to="/contact"
+          className="inline-flex items-center px-8 py-4 bg-red-800 text-white rounded-md hover:bg-red-700 transition-colors"
         >
-          Contact Us
-        </a>
+          Get Started
+          <ArrowRight className="ml-2" size={20} />
+        </Link>
       </div>
     </section>
   );
