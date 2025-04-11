@@ -1,6 +1,8 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import { Target, Award, Heart, Star, Shield, Users } from 'lucide-react';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
 // Animation Variants
 const fadeInUp = {
@@ -17,6 +19,8 @@ const fadeInUp = {
 };
 
 const About = () => {
+  const navigate = useNavigate();
+
   return (
     <div className="flex flex-col">
       {/* Hero Section */}
@@ -118,8 +122,8 @@ const About = () => {
         viewport={{ once: true }}
         variants={fadeInUp}
       >
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <h2 className="text-4xl text-center mb-16">Our Core Values</h2>
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 ">
+          <h2 className="text-5xl md:text-6xl lg:text-6xl bg-clip-text text-transparent bg-gradient-to-r from-red-800 to-red-600 leading-tight text-center mb-10 font-extrabold">Our Core Values</h2>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-12">
             {[
               { icon: <Heart className="text-red-800" size={32} />, title: 'Passion', desc: 'We are driven by our passion for digital excellence and innovation.' },
@@ -151,19 +155,20 @@ const About = () => {
         viewport={{ once: true }}
         variants={fadeInUp}
       >
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <h2 className="text-4xl mb-6">Join Our Journey</h2>
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center font-extrabold">
+          <h2 className="text-5xl md:text-6xl lg:text-6xl bg-clip-text text-transparent bg-gradient-to-r from-red-800 to-red-600 leading-tight mb-5">Join Our Journey</h2>
           <p className="text-xl text-gray-600 mb-8 max-w-3xl mx-auto">
             Ready to transform your digital presence? Let's work together to create
             something extraordinary that sets you apart in the digital landscape.
           </p>
           <motion.button
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.95 }}
-            className="inline-flex items-center px-8 py-4 bg-red-800 text-white rounded-md hover:bg-red-700 transition-colors"
-          >
-            Get in Touch
-          </motion.button>
+      whileHover={{ scale: 1.05 }}
+      whileTap={{ scale: 0.95 }}
+      className="inline-flex items-center px-8 py-4 bg-red-800 text-white rounded-md hover:bg-red-700 transition-colors"
+      onClick={() => navigate('/contact')}
+    >
+      Get in Touch
+    </motion.button>
         </div>
       </motion.section>
     </div>

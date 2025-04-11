@@ -95,11 +95,11 @@ const ServicesSection = () => {
           whileInView={{ opacity: 1, y: 0 }}
           transition={{ duration: 2 }}
           viewport={{ once: true }}
-          className="text-center mb-16"
+          className="text-center mb-16 font-extrabold"
         >
-          <p className="text-red-800 font-semibold mb-2 uppercase tracking-wide">What We Offer</p>
-          <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-4">Our Services</h2>
-          <div className="w-24 h-1 bg-red-800 mx-auto mb-6 rounded-full"></div>
+          <p className="text-red-800 font-extrabold mb-2 uppercase tracking-wide">What We Offer</p>
+          <h2 className="text-5xl md:text-6xl lg:text-6xl bg-clip-text text-transparent bg-gradient-to-r from-red-800 to-red-600 leading-tight">Our Services</h2>
+          <div className="w-[200px] h-1 bg-red-800 mx-auto mt-5 mb-6 rounded-full"></div>
           <p className="text-gray-600 max-w-2xl mx-auto text-lg">
             We offer comprehensive digital solutions tailored to your business needs.
           </p>

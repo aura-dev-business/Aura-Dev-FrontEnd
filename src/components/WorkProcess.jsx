@@ -41,7 +41,7 @@ const WorkProcess = () => {
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         <motion.div 
-          className="text-center max-w-3xl mx-auto mb-16"
+          className="text-center max-w-3xl mx-auto mb-16 font-extrabold"
           initial={{ opacity: 0, y: 40 }}
           whileInView={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6 }}
@@ -50,7 +50,7 @@ const WorkProcess = () => {
           <span className="inline-block px-4 py-1 bg-red-50 rounded-full text-red-800 text-sm font-medium mb-4">
             How We Work
           </span>
-          <h2 className="text-4xl md:text-5xl font-bold mb-6 text-gray-800">Our Work Process</h2>
+          <h2 className="ttext-5xl md:text-6xl lg:text-6xl bg-clip-text text-transparent bg-gradient-to-r from-red-800 to-red-600 leading-tight">Our Work Process</h2>
           <p className="text-lg text-gray-600">
             Our proven methodology ensures quality results, timely delivery, and exceptional client satisfaction.
           </p>

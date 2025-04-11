@@ -33,11 +33,11 @@ const Footer = () => {
             <div className="w-full md:w-auto">
               <div className="flex">
                 <input 
-                  type="email" 
+                  type="text" 
                   placeholder="Enter your email" 
-                  className="px-4 py-3 bg-gray-800 text-white rounded-l-lg focus:outline-none focus:ring-1 focus:ring-red-500 w-full md:w-64"
+                  className="px-4 py-3 bg-gray-800 text-white rounded-l-lg focus:outline-none  focus:ring-red-500 w-full md:w-64 z-10"
                 />
-                <button className="bg-red-700 hover:bg-red-600 px-4 py-3 rounded-r-lg transition-colors duration-300 flex items-center">
+                <button className="bg-red-700 hover:bg-red-600 px-4 py-3 rounded-r-lg transition-colors duration-300 flex items-center z-10">
                   <Send size={18} />
                 </button>
               </div>

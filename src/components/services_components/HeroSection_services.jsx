@@ -10,7 +10,7 @@ const HeroSection_services = () => {
             <section className="bg-gray-50 py-20 mt-10">
                 <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                     <div className="text-center">
-                        <h1 className="text-5xl mb-6">
+                        <h1 className="text-5xl md:text-6xl lg:text-6xl bg-clip-text text-transparent bg-gradient-to-r from-red-800 to-red-600 leading-tight">
                             Our <span className="text-red-800">Services</span>
                         </h1>
                         <p className="text-xl text-gray-600 max-w-3xl mx-auto">

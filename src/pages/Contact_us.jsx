@@ -207,8 +207,8 @@ const ContactPage = () => {
                   </div>
                   <div>
                     <p className="text-sm opacity-70">Phone</p>
-                    <a href="tel:+15551234567" className="hover:underline">
-                      +1 9188296027
+                    <a href="tel:+91" className="hover:underline">
+                      +91 9188296027
                     </a>
                   </div>
                 </motion.div>
@@ -291,7 +291,7 @@ const ContactPage = () => {
                     value={formData.name}
                     onChange={handleChange}
                     className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-transparent"
-                    placeholder="John Doe"
+                    placeholder="Enter Your Name"
                   />
                 </motion.div>
 
@@ -308,7 +308,7 @@ const ContactPage = () => {
                     value={formData.email}
                     onChange={handleChange}
                     className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-transparent"
-                    placeholder="john@example.com"
+                    placeholder="john@gmail.com"
                   />
                 </motion.div>
 
@@ -324,7 +324,7 @@ const ContactPage = () => {
                     value={formData.phone}
                     onChange={handleChange}
                     className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-transparent"
-                    placeholder="+1 (555) 123-4567"
+                    placeholder="+91 123456789"
                   />
                 </motion.div>
 
