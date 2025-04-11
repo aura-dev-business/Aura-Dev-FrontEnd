@@ -21,32 +21,7 @@ export const testimonials = [
     }
   ];
   
-  export const services = [
-    {
-      icon: "fa-laptop-code",
-      title: "Web Development",
-      description: "Custom web applications and responsive websites built with cutting-edge technologies.",
-      image: "https://public.readdy.ai/ai/img_res/b8c9a7f4e2d1b8c9a7f4e2d1b8c9a7f4.jpg"
-    },
-    {
-      icon: "fa-mobile-alt",
-      title: "Mobile Applications",
-      description: "Native and cross-platform mobile apps that deliver exceptional user experiences.",
-      image: "https://public.readdy.ai/ai/img_res/c9a7f4e2d1b8c9a7f4e2d1b8c9a7f4e2.jpg"
-    },
-    {
-      icon: "fa-paint-brush",
-      title: "UI/UX Design",
-      description: "User-centered design solutions that combine aesthetics with functionality.",
-      image: "https://public.readdy.ai/ai/img_res/a7f4e2d1b8c9a7f4e2d1b8c9a7f4e2d1.jpg"
-    },
-    {
-      icon: "fa-cloud",
-      title: "Cloud Solutions",
-      description: "Scalable cloud infrastructure and services for optimal performance and security.",
-      image: "https://public.readdy.ai/ai/img_res/f4e2d1b8c9a7f4e2d1b8c9a7f4e2d1b8.jpg"
-    }
-  ];
+
   
   export const projects = [
     {
