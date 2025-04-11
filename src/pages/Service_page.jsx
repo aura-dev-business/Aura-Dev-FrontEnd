@@ -1,28 +1,30 @@
 import React from 'react';
 import Navigation from '../components/Navigation';
-import HeroSection from '../components/HeroSection'; 
-import ServicesSection from '../components/ServicesSection';
-import WhyChooseUs from '../components/WhyChooseUs';
-import WorkProcess from '../components/WorkProcess';
-import CTASection from '../components/CTASection';
 import Footer from '../components/Footer';
+import { Globe, Code, Palette, LineChart, MessageSquare, Smartphone } from 'lucide-react';
+import HeroSection_services from '../components/services_components/HeroSection_services';
+import Process_section from '../components/services_components/Process_section';
+import ServicesSection_services from '../components/services_components/ServicesSection_services';
+
 
 const Services = () => {
   return (
     <>
       <Navigation />
-      
-     <HeroSection 
-        title="Our Services"
-        subtitle="We offer a wide range of services to meet your needs."
-      />
-      <ServicesSection />
-      <WhyChooseUs />
-      <WorkProcess />
-      <CTASection />
-      <Footer />
+
+      <HeroSection_services/>
+
+      <ServicesSection_services/>
+
+
+
+      {/* Process Section */}
+      <Process_section />
+
+
     </>
   );
 };
+
 
 export default Services;
