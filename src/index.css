@@ -1,3 +1,16 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+/* Apply the font globally */
+/*body {
+     font-family: 'Special Gothic Expanded One', sans-serif;
+   }
+/* filepath: /Users/admin/Desktop/AURADEV/Aura-Dev-FrontEnd/src/index.css */
+@font-face {
+    font-family: 'Aspal';
+    src: url('./assets/fonts/Aspal.ttf') format('truetype'),
+         url('./assets/fonts/Aspal.otf') format('opentype');
+    font-weight: normal;
+    font-style: normal;
+  }
