@@ -1,4 +1,5 @@
 import React from 'react';
+import { motion } from 'framer-motion';
 import { Globe, Zap, Users, Check, ArrowRight } from 'lucide-react';
 
 const WhyChooseUs = () => {
@@ -25,14 +26,18 @@ const WhyChooseUs = () => {
 
   return (
     <section className="py-24 relative overflow-hidden">
-      {/* Background Elements */}
       <div className="absolute inset-0 bg-gradient-to-br from-white to-gray-50"></div>
       <div className="absolute right-0 top-0 h-40 w-40 bg-red-50 rounded-full blur-3xl opacity-60 -translate-y-1/2"></div>
       <div className="absolute left-0 bottom-0 h-64 w-64 bg-red-50 rounded-full blur-3xl opacity-70 -translate-x-1/2"></div>
-      
+
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-        {/* Section Header */}
-        <div className="text-center max-w-3xl mx-auto mb-16">
+        <motion.div 
+          className="text-center max-w-3xl mx-auto mb-16"
+          initial={{ opacity: 0, y: 40 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6 }}
+          viewport={{ once: true }}
+        >
           <div className="inline-block px-3 py-1 bg-red-50 rounded-full text-red-800 text-sm font-medium mb-3">
             Our Advantages
           </div>
@@ -42,29 +47,27 @@ const WhyChooseUs = () => {
           <p className="text-lg text-gray-600">
             We combine expertise, innovation, and dedication to deliver exceptional digital experiences that transform businesses.
           </p>
-        </div>
-        
-        {/* Features Grid */}
+        </motion.div>
+
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8 lg:gap-12">
           {features.map((feature, index) => (
-            <div 
+            <motion.div 
               key={index}
               className="relative group bg-white p-8 rounded-2xl border border-gray-100 shadow-lg shadow-gray-100/50 hover:shadow-xl transition-all duration-300 hover:border-red-100"
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ delay: index * 0.2, duration: 0.5 }}
+              viewport={{ once: true }}
             >
-              {/* Card Header with Icon */}
               <div className="flex items-center mb-6">
                 <div className="w-16 h-16 bg-gradient-to-br from-red-50 to-red-100 rounded-xl flex items-center justify-center shadow-inner group-hover:bg-gradient-to-br group-hover:from-red-100 group-hover:to-red-200 transition-all duration-300">
                   <feature.icon className="text-red-800" size={28} />
                 </div>
                 <h3 className="text-xl font-bold ml-4 text-gray-800">{feature.title}</h3>
               </div>
-              
-              {/* Description */}
               <p className="text-gray-600 mb-6">
                 {feature.description}
               </p>
-              
-              {/* Benefits List */}
               <ul className="space-y-2 mb-8">
                 {feature.benefits.map((benefit, i) => (
                   <li key={i} className="flex items-center text-gray-700">
@@ -73,8 +76,6 @@ const WhyChooseUs = () => {
                   </li>
                 ))}
               </ul>
-              
-              {/* Card Footer */}
               <div className="pt-4 border-t border-gray-100">
                 <a 
                   href="#" 
@@ -84,15 +85,18 @@ const WhyChooseUs = () => {
                   <ArrowRight size={16} className="ml-1 group-hover:translate-x-1 transition-transform" />
                 </a>
               </div>
-              
-              {/* Corner Accent */}
               <div className="absolute -top-1 -right-1 w-5 h-5 bg-red-800 opacity-0 group-hover:opacity-100 rounded-bl-xl rounded-tr-xl transition-opacity duration-300"></div>
-            </div>
+            </motion.div>
           ))}
         </div>
-        
-        {/* Bottom CTA */}
-        <div className="mt-16 text-center">
+
+        <motion.div 
+          className="mt-16 text-center"
+          initial={{ opacity: 0, y: 30 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5, delay: 0.7 }}
+          viewport={{ once: true }}
+        >
           <a 
             href="/about-us" 
             className="inline-flex items-center px-6 py-3 bg-red-800 text-white font-medium rounded-lg hover:bg-red-900 transition-colors"
@@ -100,7 +104,7 @@ const WhyChooseUs = () => {
             Discover Our Process
             <ArrowRight size={16} className="ml-2" />
           </a>
-        </div>
+        </motion.div>
       </div>
     </section>
   );
