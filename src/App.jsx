@@ -5,6 +5,8 @@ import Services from "./pages/Service_page";
 import About_us from "./pages/About_us";
 import Navigation from "./components/Navigation";
 import Footer from "./components/Footer";
+import TopButton from "./components/TopButton";
+import Contact from "./pages/Contact_us"
 
 const App = () => {
   return (
@@ -14,9 +16,13 @@ const App = () => {
         <Route path="/" element={<Home />} />
         <Route path="/Services" element={<Services/>} />
         <Route path="/About_us" element={<About_us/>} />
+        <Route path="/Contact" element={<Contact/>} />
+        
       </Routes>
       <Footer/>
+      <TopButton/>
     </Router>
+    
   );
 };
 

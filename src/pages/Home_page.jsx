@@ -8,6 +8,7 @@ import WhyChooseUs from '../components/WhyChooseUs';
 import WorkProcess from '../components/WorkProcess';
 import CTASection from '../components/CTASection';
 import Footer from '../components/Footer';
+import ContactComponent from '../components/ContactHero';
 
 
 const Home = () => {
@@ -20,6 +21,7 @@ const Home = () => {
       <WhyChooseUs />
       <WorkProcess />
       <CTASection />
+      <ContactComponent/>
     </>
   );
 };
