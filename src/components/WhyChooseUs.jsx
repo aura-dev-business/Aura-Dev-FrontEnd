@@ -30,7 +30,7 @@ const WhyChooseUs = () => {
       <div className="absolute right-0 top-0 h-40 w-40 bg-red-50 rounded-full blur-3xl opacity-60 -translate-y-1/2"></div>
       <div className="absolute left-0 bottom-0 h-64 w-64 bg-red-50 rounded-full blur-3xl opacity-70 -translate-x-1/2"></div>
 
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 ">
         <motion.div 
           className="text-center max-w-3xl mx-auto mb-16"
           initial={{ opacity: 0, y: 40 }}
@@ -38,13 +38,13 @@ const WhyChooseUs = () => {
           transition={{ duration: 0.6 }}
           viewport={{ once: true }}
         >
-          <div className="inline-block px-3 py-1 bg-red-50 rounded-full text-red-800 text-sm font-medium mb-3">
+          <div className="inline-block px-3 py-1 bg-red-50 rounded-full text-red-800 text-sm font-extrabold mb-3">
             Our Advantages
           </div>
-          <h2 className="text-4xl md:text-5xl font-bold mb-5 bg-clip-text text-transparent bg-gradient-to-r from-gray-800 to-gray-600">
+          <h2 className="text-5xl md:text-6xl lg:text-6xl bg-clip-text text-transparent bg-gradient-to-r from-red-800 to-red-600 leading-tight font-extrabold">
             Why Choose AuraDev?
           </h2>
-          <p className="text-lg text-gray-600">
+          <p className="text-lg text-gray-600 font-extrabold mt-5">
             We combine expertise, innovation, and dedication to deliver exceptional digital experiences that transform businesses.
           </p>
         </motion.div>

@@ -41,9 +41,9 @@ export default function ContactComponent() {
           initial={{ opacity: 0 }} 
           animate={{ opacity: 1 }} 
           transition={{ delay: 0.2 }}
-          className="flex justify-center mb-10"
+          className="flex justify-center mb-10 font-extrabold"
         >
-          <h3 className="capitalize text-5xl font-bold text-indigo-900 text-center transition-transform duration-300 hover:scale-105 hover:text-red-700">
+          <h3 className="capitalize text-5xl md:text-6xl lg:text-6xl bg-clip-text text-transparent bg-gradient-to-r from-red-800 to-red-600 leading-tight">
             Get in touch
           </h3>
         </motion.div>
