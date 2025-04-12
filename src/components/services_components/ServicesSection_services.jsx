@@ -25,7 +25,7 @@ const iconMap = {
 const getIconComponent = (iconName) => {
   if (!iconName) return null;
   const formatted = iconName.charAt(0).toUpperCase() + iconName.slice(1);
-  return iconMap[formatted] || null;
+  return iconMap[formatted] || Globe; // Default to Globe if no match
 };
 
 // Animation Variants
@@ -55,21 +55,33 @@ const ServicesSection = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    const sampleServices = [
-      { id: 1, name: "Web Development", description: "Custom websites and web applications...", imageUrl: "Code", features: ["Responsive Design", "CMS Integration", "E-commerce Solutions"] },
-      { id: 2, name: "UI/UX Design", description: "User-centered design that enhances UX...", imageUrl: "Palette", features: ["User Research", "Wireframing", "Interactive Prototypes"] },
-      { id: 3, name: "Data Analytics", description: "Transform your data into insights...", imageUrl: "LineChart", features: ["Data Visualization", "Performance Metrics", "Custom Dashboards"] },
-      { id: 4, name: "Mobile Development", description: "Native and cross-platform mobile apps...", imageUrl: "Smartphone", features: ["iOS & Android", "Cross-Platform", "App Store Optimization"] },
-      { id: 5, name: "Digital Marketing", description: "Strategic digital campaigns to boost visibility...", imageUrl: "Globe", features: ["SEO & SEM", "Content Strategy", "Social Media Marketing"] },
-      { id: 6, name: "Consultation", description: "Expert advice to help you grow digitally...", imageUrl: "MessageSquare", features: ["Technology Assessment", "Digital Strategy", "Innovation Planning"] },
-      { id: 7, name: "Consultation", description: "Expert advice to help you grow digitally...", imageUrl: "MessageSquare", features: ["Technology Assessment", "Digital Strategy", "Innovation Planning"] },
-      { id: 8, name: "Consultation", description: "Expert advice to help you grow digitally...", imageUrl: "MessageSquare", features: ["Technology Assessment", "Digital Strategy", "Innovation Planning"] },
-    ];
+    const fetchServices = async () => {
+      try {
+        const response = await fetch("http://localhost:8080/api/services"); // Replace with your API endpoint
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        const data = await response.json();
 
-    setTimeout(() => {
-      setServices(sampleServices);
-      setLoading(false);
-    }, 200);
+        // Validate and format the data
+        const formattedData = data.map(service => ({
+          id: service.id,
+          name: service.name || "Unnamed Service",
+          description: service.description || "No description available.",
+          imageUrl: service.imageUrl || "Globe",
+          features: Array.isArray(service.features) ? service.features : []
+        }));
+
+        setServices(formattedData);
+        setLoading(false);
+      } catch (err) {
+        console.error("Error fetching services:", err);
+        setError("Failed to load services. Please try again later.");
+        setLoading(false);
+      }
+    };
+
+    fetchServices();
   }, []);
 
   const handleServiceHover = (id) => {

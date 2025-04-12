@@ -1,7 +1,9 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {Mail,Phone,MapPin,MessageSquare,Clock,Send,Check,AlertCircle } from 'lucide-react';
 import { FaFacebookF, FaTwitter, FaLinkedinIn, FaInstagram } from 'react-icons/fa';
 import { motion } from 'framer-motion';
+import SuccessModal from '../components/SuccessModal'; // Import the modal component
+
 const faqData = [
   {
     q: "What is your typical response time?",
@@ -35,10 +37,6 @@ const item = {
   show: { opacity: 1, y: 0 }
 };
 
-
-
-
-
 const ContactPage = () => {
   const fadeUp = {
     hidden: { opacity: 0, y: 30 },
@@ -65,13 +63,29 @@ const ContactPage = () => {
     info: { error: false, msg: null }
   });
 
-  const services = [
-    { value: 'web-development', label: 'Web Development' },
-    { value: 'mobile-app', label: 'Mobile App Development' },
-    { value: 'ui-ux', label: 'UI/UX Design' },
-    { value: 'digital-marketing', label: 'Digital Marketing' },
-    { value: 'consulting', label: 'IT Consulting' }
-  ];
+  const [services, setServices] = useState([]); // State to store services
+  const [loadingServices, setLoadingServices] = useState(true); // State to handle loading
+  const [isModalOpen, setIsModalOpen] = useState(false); // State to control the modal
+
+  useEffect(() => {
+    const fetchServices = async () => {
+      try {
+        const response = await fetch("http://localhost:8080/api/services"); // Fetch services from backend
+        const data = await response.json();
+        const formattedServices = data.map(service => ({
+          value: service.name.toLowerCase().replace(/\s+/g, '-'),
+          label: service.name
+        }));
+        setServices(formattedServices);
+        setLoadingServices(false);
+      } catch (error) {
+        console.error("Failed to fetch services:", error);
+        setLoadingServices(false);
+      }
+    };
+
+    fetchServices();
+  }, []);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -83,46 +97,57 @@ const ContactPage = () => {
     setStatus({ submitted: false, submitting: true, info: { error: false, msg: null } });
 
     try {
-      // Simulate API request
-      await new Promise(resolve => setTimeout(resolve, 1500));
-      
-      // Success simulation
+      const response = await fetch("http://localhost:8080/api/contact", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(formData),
+      });
+
+      if (!response.ok) {
+        throw new Error("Failed to submit the form");
+      }
+
+      const result = await response.json();
+
       setStatus({
         submitted: true,
         submitting: false,
-        info: { error: false, msg: 'Message sent successfully!' }
+        info: { error: false, msg: "Message sent successfully!" },
       });
-      
+
       // Reset form after successful submission
       setFormData({
-        name: '',
-        email: '',
-        phone: '',
-        subject: '',
-        message: '',
-        service: ''
+        name: "",
+        email: "",
+        phone: "",
+        subject: "",
+        message: "",
+        service: "",
       });
-      
-      // Reset status after 5 seconds
+
+      // Open the success modal
+      setIsModalOpen(true);
+
+      // Automatically close the modal after 5 seconds
       setTimeout(() => {
-        setStatus({
-          submitted: false,
-          submitting: false,
-          info: { error: false, msg: null }
-        });
+        setIsModalOpen(false);
       }, 5000);
-      
     } catch (error) {
       setStatus({
         submitted: false,
         submitting: false,
-        info: { error: true, msg: 'Something went wrong. Please try again later.' }
+        info: { error: true, msg: "Something went wrong. Please try again later." },
       });
     }
   };
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-gray-50 to-white pb-20">
+      {/* Success Modal */}
+      <SuccessModal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} />
+
       {/* Hero Section */}
       import { motion } from 'framer-motion';
 
@@ -262,9 +287,12 @@ const ContactPage = () => {
           <motion.div className="lg:col-span-3 p-8 lg:p-12" variants={fadeUp}>
             <h3 className="text-2xl font-bold text-gray-800 mb-6">Send us a message</h3>
 
+            {/* Success or Error Message */}
             {status.info.msg && (
               <motion.div
-                className={`mb-6 p-4 rounded-lg flex items-start ${status.info.error ? 'bg-red-50 text-red-800' : 'bg-green-50 text-green-800'}`}
+                className={`mb-6 p-4 rounded-lg flex items-start ${
+                  status.info.error ? 'bg-red-50 text-red-800' : 'bg-green-50 text-green-800'
+                }`}
                 variants={fadeUp}
               >
                 {status.info.error ? (
@@ -276,6 +304,7 @@ const ContactPage = () => {
               </motion.div>
             )}
 
+            {/* Contact Form */}
             <motion.form onSubmit={handleSubmit} variants={fadeUp}>
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 mb-6">
                 {/* Full Name */}
@@ -328,7 +357,7 @@ const ContactPage = () => {
                   />
                 </motion.div>
 
-                {/* Service */}
+                {/* Service Dropdown */}
                 <motion.div variants={fadeUp}>
                   <label htmlFor="service" className="block text-sm font-medium text-gray-700 mb-1">
                     Service Interested In
@@ -341,11 +370,15 @@ const ContactPage = () => {
                     className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-transparent"
                   >
                     <option value="">Select a service</option>
-                    {services.map((service) => (
-                      <option key={service.value} value={service.value}>
-                        {service.label}
-                      </option>
-                    ))}
+                    {loadingServices ? (
+                      <option disabled>Loading services...</option>
+                    ) : (
+                      services.map((service) => (
+                        <option key={service.value} value={service.value}>
+                          {service.label}
+                        </option>
+                      ))
+                    )}
                   </select>
                 </motion.div>
               </div>
