@@ -1,6 +1,6 @@
 import React from 'react';
 import Navigation from '../components/Navigation';
-import HeroSection from '../components/HeroSection';
+import HeroSection from '../components/Herosection';
 import ServicesSection from '../components/ServicesSection';
 import FeaturedProjects from '../components/FeaturedProjects';
 import WhyChooseUs from '../components/WhyChooseUs';
