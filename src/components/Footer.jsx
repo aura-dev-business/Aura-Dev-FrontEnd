@@ -1,28 +1,48 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Mail, Phone, MapPin, Linkedin, Twitter, Instagram, Facebook, Send } from 'lucide-react';
 import { motion } from 'framer-motion';
 
-const fadeInUp = {
-  hidden: { opacity: 0, y: 30 },
-  show: { opacity: 1, y: 0, transition: { duration: 0.6 } },
-};
-
 const Footer = () => {
-  const scrollToTop = () => {
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+  const [email, setEmail] = useState('');
+  const [status, setStatus] = useState({ submitting: false, success: false, error: false });
+
+  const handleSubscribe = async (e) => {
+    e.preventDefault();
+    setStatus({ submitting: true, success: false, error: false });
+
+    try {
+      const response = await fetch('http://localhost:8080/api/newsletter', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ email }),
+      });
+
+      if (!response.ok) {
+        throw new Error('Failed to subscribe');
+      }
+
+      setStatus({ submitting: false, success: true, error: false });
+      setEmail(''); // Clear the input field
+    } catch (error) {
+      console.error('Error subscribing to newsletter:', error);
+      setStatus({ submitting: false, success: false, error: true });
+    }
   };
 
   return (
     <footer className="bg-gradient-to-b from-gray-900 to-black text-white relative overflow-hidden">
-      <div className="absolute top-0 right-0 w-96 h-96 bg-red-800 rounded-full opacity-5 blur-3xl -translate-y-1/2"></div>
-      <div className="absolute bottom-0 left-0 w-64 h-64 bg-red-500 rounded-full opacity-5 blur-3xl -translate-x-1/2"></div>
-
-      <motion.div 
-        className="border-b border-gray-800" 
-        initial="hidden" 
-        whileInView="show" 
-        viewport={{ once: true }} 
-        variants={fadeInUp}
+      {/* Newsletter Subscription */}
+      <motion.div
+        className="border-b border-gray-800"
+        initial="hidden"
+        whileInView="show"
+        viewport={{ once: true }}
+        variants={{
+          hidden: { opacity: 0, y: 30 },
+          show: { opacity: 1, y: 0, transition: { duration: 0.6 } },
+        }}
       >
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
           <div className="flex flex-col md:flex-row justify-between items-center">
@@ -31,27 +51,44 @@ const Footer = () => {
               <p className="text-gray-400 text-sm">Subscribe to our newsletter</p>
             </div>
             <div className="w-full md:w-auto">
-              <div className="flex">
-                <input 
-                  type="text" 
-                  placeholder="Enter your email" 
-                  className="px-4 py-3 bg-gray-800 text-white rounded-l-lg focus:outline-none  focus:ring-red-500 w-full md:w-64 z-10"
+              <form onSubmit={handleSubscribe} className="flex">
+                <input
+                  type="email"
+                  placeholder="Enter your email"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  className="px-4 py-3 bg-gray-800 text-white rounded-l-lg focus:outline-none focus:ring-red-500 w-full md:w-64 z-10"
+                  required
                 />
-                <button className="bg-red-700 hover:bg-red-600 px-4 py-3 rounded-r-lg transition-colors duration-300 flex items-center z-10">
-                  <Send size={18} />
+                <button
+                  type="submit"
+                  disabled={status.submitting}
+                  className="bg-red-700 hover:bg-red-600 px-4 py-3 rounded-r-lg transition-colors duration-300 flex items-center z-10"
+                >
+                  {status.submitting ? 'Subscribing...' : <Send size={18} />}
                 </button>
-              </div>
+              </form>
+              {status.success && (
+                <p className="text-green-500 text-sm mt-2">Subscribed successfully!</p>
+              )}
+              {status.error && (
+                <p className="text-red-500 text-sm mt-2">Failed to subscribe. Please try again.</p>
+              )}
             </div>
           </div>
         </div>
       </motion.div>
 
+      {/* Other Footer Content */}
       <motion.div 
         className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 relative z-10"
         initial="hidden"
         whileInView="show"
         viewport={{ once: true }}
-        variants={fadeInUp}
+        variants={{
+          hidden: { opacity: 0, y: 30 },
+          show: { opacity: 1, y: 0, transition: { duration: 0.6 } },
+        }}
       >
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12">
           <div>
