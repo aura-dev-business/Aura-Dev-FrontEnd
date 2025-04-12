@@ -13,8 +13,7 @@ import {
   AlertCircle,
 } from "lucide-react";
 import { motion } from 'framer-motion';
-//import '../App.css'; // Import your CSS file for custom styles
-import './Scrolling.css'
+import './Scrolling.css';
 
 const iconMap = {
   Globe,
@@ -36,6 +35,8 @@ const ServicesSection = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const scrollContainerRef = useRef(null); // Ref for the scrollable container
+  const [isAtStart, setIsAtStart] = useState(true); // Track if at the start of the list
+  const [isAtEnd, setIsAtEnd] = useState(false); // Track if at the end of the list
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -67,6 +68,14 @@ const ServicesSection = () => {
 
     fetchServices();
   }, []);
+
+  const handleScroll = () => {
+    if (scrollContainerRef.current) {
+      const { scrollLeft, scrollWidth, clientWidth } = scrollContainerRef.current;
+      setIsAtStart(scrollLeft === 0);
+      setIsAtEnd(scrollLeft + clientWidth >= scrollWidth);
+    }
+  };
 
   const scrollLeft = () => {
     if (scrollContainerRef.current) {
@@ -129,26 +138,32 @@ const ServicesSection = () => {
           className="text-center mb-16 font-extrabold"
         >
           <p className="text-red-800 font-extrabold mb-2 uppercase tracking-wide">What We Offer</p>
-          <h2 className="text-5xl md:text-6xl lg:text-6xl bg-clip-text text-transparent bg-gradient-to-r from-red-800 to-red-600 leading-tight">Our Services</h2>
+          <h2 className="text-5xl md:text-6xl lg:text-6xl bg-clip-text text-transparent bg-gradient-to-r from-red-800 to-red-600 leading-tight">
+            Our Services
+          </h2>
           <div className="w-[200px] h-1 bg-red-800 mx-auto mt-5 mb-6 rounded-full"></div>
           <p className="text-gray-600 max-w-2xl mx-auto text-lg">
             We offer comprehensive digital solutions tailored to your business needs.
           </p>
         </motion.div>
 
-        <div className="relative">
+        <div className="relative overflow-hidden">
           {/* Left Button */}
-          <button
-            onClick={scrollLeft}
-            className="absolute left-0 top-1/2 transform -translate-y-1/2 bg-red-800 text-white p-3 rounded-full shadow-lg hover:bg-red-700 transition z-10"
-          >
-            <ArrowLeft size={24} />
-          </button>
+          {!isAtStart && (
+            <button
+              onClick={scrollLeft}
+              className="absolute left-4 top-1/2 transform -translate-y-1/2 bg-red-800 text-white p-3 rounded-full shadow-lg hover:bg-red-700 transition z-20"
+            >
+              <ArrowLeft size={24} />
+            </button>
+          )}
 
           {/* Scrollable Services Container */}
           <div
             ref={scrollContainerRef}
-            className="flex overflow-x-auto space-x-6 scrollbar-hide"
+            onScroll={handleScroll}
+            className="flex overflow-x-auto space-x-6 scrollbar-hide px-4"
+            style={{ overflowY: 'hidden' }} // Prevent vertical scrolling
           >
             {services.map((service, index) => {
               const IconComponent = getIconComponent(service.imageUrl);
@@ -160,25 +175,56 @@ const ServicesSection = () => {
                   whileInView={{ opacity: 1, y: 0 }}
                   transition={{ delay: index * 0.1, duration: 2 }}
                   viewport={{ once: true }}
-                  className="bg-white p-8 rounded-xl shadow-md hover:shadow-lg transition-all duration-300 flex-shrink-0 w-80"
+                  className="bg-white p-8 rounded-xl shadow-md hover:shadow-2xl hover:scale-110 hover:-rotate-1 hover:bg-red-50 transition-transform duration-300 flex-shrink-0 w-96"
                 >
                   <div className="w-16 h-16 rounded-full bg-red-50 text-red-800 flex items-center justify-center mb-6">
                     {IconComponent ? <IconComponent size={28} /> : <Globe size={28} />}
                   </div>
                   <h3 className="text-xl font-bold text-gray-900 mb-3">{service.name}</h3>
                   <p className="text-gray-600 mb-6">{service.description}</p>
+
+                  {/* Features List */}
+                  {service.features.length > 0 && (
+                    <ul className="text-gray-700 space-y-2">
+                      {service.features.map((feature, idx) => (
+                        <li key={idx} className="flex items-center">
+                          <span className="w-2 h-2 bg-red-800 rounded-full mr-2"></span>
+                          {feature}
+                        </li>
+                      ))}
+                    </ul>
+                  )}
                 </motion.div>
               );
             })}
           </div>
 
           {/* Right Button */}
-          <button
-            onClick={scrollRight}
-            className="absolute right-0 top-1/2 transform -translate-y-1/2 bg-red-800 text-white p-3 rounded-full shadow-lg hover:bg-red-700 transition z-10"
+          {!isAtEnd && (
+            <button
+              onClick={scrollRight}
+              className="absolute right-4 top-1/2 transform -translate-y-1/2 bg-red-800 text-white p-3 rounded-full shadow-lg hover:bg-red-700 transition z-20"
+            >
+              <ArrowRight size={24} />
+            </button>
+          )}
+
+          {/* View All Services Button */}
+          <motion.div
+            whileInView={{ opacity: 1, y: 0 }}
+            initial={{ opacity: 0, y: 30 }}
+            transition={{ delay: 0.3, duration: 2 }}
+            viewport={{ once: true }}
+            className="text-center mt-16"
           >
-            <ArrowRight size={24} />
-          </button>
+            <button
+              onClick={() => navigate('/services')}
+              className="px-8 py-4 bg-red-800 text-white rounded-lg hover:bg-red-700 transition-colors shadow-md hover:shadow-lg flex items-center mx-auto"
+            >
+              <span>View All Services</span>
+              <ArrowRight size={18} className="ml-2" />
+            </button>
+          </motion.div>
         </div>
       </div>
     </section>
