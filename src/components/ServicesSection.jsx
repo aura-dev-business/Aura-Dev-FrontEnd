@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import {
   Globe,
@@ -8,10 +8,13 @@ import {
   MessageSquare,
   Smartphone,
   ArrowRight,
+  ArrowLeft,
   Loader,
-  AlertCircle
+  AlertCircle,
 } from "lucide-react";
 import { motion } from 'framer-motion';
+//import '../App.css'; // Import your CSS file for custom styles
+import './Scrolling.css'
 
 const iconMap = {
   Globe,
@@ -32,7 +35,7 @@ const ServicesSection = () => {
   const [services, setServices] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const [activeService, setActiveService] = useState(null);
+  const scrollContainerRef = useRef(null); // Ref for the scrollable container
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -65,7 +68,23 @@ const ServicesSection = () => {
     fetchServices();
   }, []);
 
-  const displayedServices = services.slice(0, 4);
+  const scrollLeft = () => {
+    if (scrollContainerRef.current) {
+      scrollContainerRef.current.scrollBy({
+        left: -300, // Adjust the scroll amount as needed
+        behavior: 'smooth',
+      });
+    }
+  };
+
+  const scrollRight = () => {
+    if (scrollContainerRef.current) {
+      scrollContainerRef.current.scrollBy({
+        left: 300, // Adjust the scroll amount as needed
+        behavior: 'smooth',
+      });
+    }
+  };
 
   if (loading) {
     return (
@@ -117,66 +136,50 @@ const ServicesSection = () => {
           </p>
         </motion.div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-          {displayedServices.map((service, index) => {
-            const IconComponent = getIconComponent(service.imageUrl);
-            const isActive = activeService === service.id;
-
-            return (
-              <motion.div
-                key={service.id}
-                initial={{ opacity: 0, y: 50 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                transition={{ delay: index * 0.1, duration: 2 }}
-                viewport={{ once: true }}
-                className={`bg-white p-8 rounded-xl transition-all duration-300 transform ${
-                  isActive ? 'shadow-xl -translate-y-2' : 'shadow-md hover:shadow-lg hover:-translate-y-1'
-                }`}
-                onMouseEnter={() => setActiveService(service.id)}
-                onMouseLeave={() => setActiveService(null)}
-              >
-                <motion.div
-                  whileHover={{ scale: 1.05 }}
-                  className={`w-16 h-16 rounded-full flex items-center justify-center mb-6 ${
-                    isActive ? 'bg-red-800 text-white' : 'bg-red-50 text-red-800'
-                  }`}
-                >
-                  {IconComponent ? <IconComponent size={28} /> : <Globe size={28} />}
-                </motion.div>
-
-                <h3 className="text-xl font-bold text-gray-900 mb-3">{service.name}</h3>
-                <p className="text-gray-600 mb-6">{service.description}</p>
-
-                <ul className="mb-6 space-y-2">
-                  {service.features.map((feature, idx) => (
-                    <li key={idx} className="flex items-center text-gray-700">
-                      <div className="w-2 h-2 bg-red-800 rounded-full mr-2"></div>
-                      {feature}
-                    </li>
-                  ))}
-                </ul>
-              </motion.div>
-            );
-          })}
-        </div>
-
-        {services.length > 4 && (
-          <motion.div
-            whileInView={{ opacity: 1, y: 0 }}
-            initial={{ opacity: 0, y: 30 }}
-            transition={{ delay: 0.3, duration: 2 }}
-            viewport={{ once: true }}
-            className="text-center mt-16"
+        <div className="relative">
+          {/* Left Button */}
+          <button
+            onClick={scrollLeft}
+            className="absolute left-0 top-1/2 transform -translate-y-1/2 bg-red-800 text-white p-3 rounded-full shadow-lg hover:bg-red-700 transition z-10"
           >
-            <button
-              onClick={() => navigate('/services#services')}
-              className="px-8 py-4 bg-red-800 text-white rounded-lg hover:bg-red-700 transition-colors shadow-md hover:shadow-lg flex items-center mx-auto"
-            >
-              <span>View All Services</span>
-              <ArrowRight size={18} className="ml-2" />
-            </button>
-          </motion.div>
-        )}
+            <ArrowLeft size={24} />
+          </button>
+
+          {/* Scrollable Services Container */}
+          <div
+            ref={scrollContainerRef}
+            className="flex overflow-x-auto space-x-6 scrollbar-hide"
+          >
+            {services.map((service, index) => {
+              const IconComponent = getIconComponent(service.imageUrl);
+
+              return (
+                <motion.div
+                  key={service.id}
+                  initial={{ opacity: 0, y: 50 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  transition={{ delay: index * 0.1, duration: 2 }}
+                  viewport={{ once: true }}
+                  className="bg-white p-8 rounded-xl shadow-md hover:shadow-lg transition-all duration-300 flex-shrink-0 w-80"
+                >
+                  <div className="w-16 h-16 rounded-full bg-red-50 text-red-800 flex items-center justify-center mb-6">
+                    {IconComponent ? <IconComponent size={28} /> : <Globe size={28} />}
+                  </div>
+                  <h3 className="text-xl font-bold text-gray-900 mb-3">{service.name}</h3>
+                  <p className="text-gray-600 mb-6">{service.description}</p>
+                </motion.div>
+              );
+            })}
+          </div>
+
+          {/* Right Button */}
+          <button
+            onClick={scrollRight}
+            className="absolute right-0 top-1/2 transform -translate-y-1/2 bg-red-800 text-white p-3 rounded-full shadow-lg hover:bg-red-700 transition z-10"
+          >
+            <ArrowRight size={24} />
+          </button>
+        </div>
       </div>
     </section>
   );
