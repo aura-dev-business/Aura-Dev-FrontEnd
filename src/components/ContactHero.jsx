@@ -16,17 +16,42 @@ export default function ContactComponent() {
     setFormData(prev => ({ ...prev, [name]: value }));
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     setIsSubmitting(true);
 
-    setTimeout(() => {
+    const payload = {
+      name: formData.name,
+      email: formData.email,
+      message: formData.message,
+      phone: null, // Other fields set to null
+      subject: null,
+      service: null,
+    };
+
+    try {
+      const response = await fetch("http://localhost:8080/api/contact", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(payload),
+      });
+
+      if (!response.ok) {
+        throw new Error("Failed to submit the form");
+      }
+
       setIsSubmitting(false);
       setSubmitted(true);
-      setFormData({ name: '', email: '', message: '' });
+      setFormData({ name: "", email: "", message: "" });
 
+      // Automatically hide the success message after 3 seconds
       setTimeout(() => setSubmitted(false), 3000);
-    }, 1000);
+    } catch (error) {
+      console.error("Error submitting the form:", error);
+      setIsSubmitting(false);
+    }
   };
 
   return (
@@ -36,7 +61,7 @@ export default function ContactComponent() {
       transition={{ duration: 0.6, ease: 'easeOut' }}
       className="bg-gradient-to-br from-gray-50 to-gray-100 rounded-2xl shadow-lg p-10"
     >
-      <div className="max-w-7xl mx-auto ">
+      <div className="max-w-7xl mx-auto">
         <motion.div 
           initial={{ opacity: 0 }} 
           animate={{ opacity: 1 }} 
@@ -49,6 +74,7 @@ export default function ContactComponent() {
         </motion.div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-10">
+          {/* Contact Information */}
           <motion.div 
             initial={{ opacity: 0, x: -50 }} 
             animate={{ opacity: 1, x: 0 }} 
@@ -92,6 +118,7 @@ export default function ContactComponent() {
             </div>
           </motion.div>
 
+          {/* Contact Form */}
           <motion.div 
             initial={{ opacity: 0, x: 50 }} 
             animate={{ opacity: 1, x: 0 }} 
