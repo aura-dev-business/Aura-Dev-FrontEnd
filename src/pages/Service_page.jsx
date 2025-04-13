@@ -11,9 +11,6 @@ const Services = () => {
   return (
     <>
       <Navigation />
-
-
-
       <ServicesSection_services/>
 
 
