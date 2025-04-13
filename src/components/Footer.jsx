@@ -3,6 +3,12 @@ import { Mail, Phone, MapPin, Linkedin, Twitter, Instagram, Facebook, Send } fro
 import { motion } from 'framer-motion';
 
 const Footer = () => {
+  const socialLinks = [
+    { icon: Linkedin, href: 'https://www.linkedin.com/company/auradev' },
+    { icon: Twitter, href: 'https://twitter.com/auradev' },
+    { icon: Instagram, href: 'https://www.instagram.com/auradevco/?igsh=MXFwMGcxamw0Ymdvcw%3D%3D#' },
+    { icon: Facebook, href: 'https://facebook.com/auradev' },
+  ];
   const [email, setEmail] = useState('');
   const [status, setStatus] = useState({ submitting: false, success: false, error: false });
 
@@ -94,21 +100,28 @@ const Footer = () => {
           <div>
             <div className="flex items-baseline mb-6">
               <h3 className="text-3xl font-bold">
-                <span className="text-red-500">Aura</span>
-                <span>Dev</span>
+                <span className="text-red-500 font-aspal">Aura</span>
+                <span className='font-aspal'>Dev</span>
               </h3>
-              <span className="ml-1 text-xs text-red-500">™</span>
             </div>
             <p className="text-gray-400 mb-6">
               Building exceptional digital presence for forward-thinking businesses worldwide.
             </p>
-            <div className="flex space-x-4">
-              {[Linkedin, Twitter, Instagram, Facebook].map((Icon, index) => (
-                <a key={index} href="#" className="w-10 h-10 rounded-full bg-gray-800 hover:bg-red-700 flex items-center justify-center transition-colors duration-300">
-                  <Icon size={18} />
-                </a>
-              ))}
-            </div>
+
+
+<div className="flex space-x-4">
+  {socialLinks.map(({ icon: Icon, href }, index) => (
+    <a
+      key={index}
+      href={href}
+      target="_blank"
+      rel="noopener noreferrer"
+      className="w-10 h-10 rounded-full bg-gray-800 hover:bg-red-700 flex items-center justify-center transition-colors duration-300"
+    >
+      <Icon size={18} />
+    </a>
+  ))}
+</div>
           </div>
 
        <div>
@@ -117,20 +130,26 @@ const Footer = () => {
     <span className="absolute bottom-0 left-0 w-1/2 h-0.5 bg-red-500"></span>
   </h4>
   <ul className="space-y-3">
-    {["Home Page", "About Us", "Services", "Contact Us"].map((item, index = {Home_page,About_us}) => {
-      return (
-        <li key={index}>
-          <a
-            href={[]}
-            className="text-gray-400 hover:text-white transition-colors duration-200 flex items-center"
-          >
-            <span className="w-1.5 h-1.5 bg-red-500 rounded-full mr-2"></span>
-            {item}
-          </a>
-        </li>
-      );
-    })}
-  </ul>
+  {[
+    { name: "Home Page", link: "/" },
+    { name: "About Us", link: "/About_us" },
+    { name: "Services", link: "/services" },
+    { name: "Contact Us", link: "/contact" }
+  ].map((item, index) => {
+    return (
+      <li key={index}>
+        <a
+          href={item.link}
+          className="text-gray-400 hover:text-white transition-colors duration-200 flex items-center"
+        >
+          <span className="w-1.5 h-1.5 bg-red-500 rounded-full mr-2"></span>
+          {item.name}
+        </a>
+      </li>
+    );
+  })}
+</ul>
+
 </div>
 
 
@@ -168,7 +187,7 @@ const Footer = () => {
               }, {
                 icon: <MapPin size={18} className="mr-3 text-red-500 mt-1 flex-shrink-0" />,
                 label: "Location:",
-                content: <address className="not-italic">Bangalore<br />Karnataka, India</address>,
+                content: <address className="not-italic">Bangalore,Karnataka, India</address>,
               }].map((item, index) => (
                 <div key={index} className="flex items-start">
                   {item.icon}
@@ -182,7 +201,7 @@ const Footer = () => {
           </div>
         </div>
 
-        <div className="mt-16 pt-8 border-t border-gray-800 flex flex-col md:flex-row justify-between items-center">
+        <div className="mt-10 pt-8 border-t border-gray-800 flex flex-col md:flex-row justify-between items-center">
           <p className="text-gray-400 text-sm mb-4 md:mb-0">
             &copy; {new Date().getFullYear()} AuraDev. All rights reserved. <span className="mx-2">|</span>
             <a href="#" className="hover:text-red-400 transition-colors">Privacy Policy</a>

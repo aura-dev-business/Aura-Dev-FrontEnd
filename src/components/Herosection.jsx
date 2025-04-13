@@ -78,12 +78,12 @@ const HeroSection = () => {
 
           {/* Image Frame */}
           <motion.div
-            initial={{ opacity: 0, x: 50 }}
+            initial={{ opacity: 0, x: 0 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 2 }}
             className="w-full md:w-1/2 relative"
           >
-            <div className="absolute -top-10 -left-10 w-24 h-24 bg-yellow-200 rounded-full opacity-20 blur-lg"></div>
+            <div className="absolute -top-10 -left-10 w-24 h-24  rounded-full opacity-20 blur-lg"></div>
             <div className="absolute -bottom-5 -right-5 w-20 h-20 bg-blue-200 rounded-full opacity-20 blur-lg"></div>
             
             <motion.div
