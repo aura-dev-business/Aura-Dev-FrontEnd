@@ -42,7 +42,7 @@ const ServicesSection = () => {
   useEffect(() => {
     const fetchServices = async () => {
       try {
-        const response = await fetch("http://localhost:8080/api/services");
+        const response = await fetch("https://d20c-152-58-211-115.ngrok-free.app/api/services");
         if (!response.ok) {
           throw new Error(`HTTP error! status: ${response.status}`);
         }
