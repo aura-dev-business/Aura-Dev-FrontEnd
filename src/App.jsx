@@ -7,8 +7,7 @@ import Navigation from "./components/Navigation";
 import Footer from "./components/Footer";
 import TopButton from "./components/TopButton";
 import ContactPage from "./pages/Contact_us"
-import ScrollToTop
- from "./components/ScrollToTop";
+import ScrollToTop from "./components/ScrollToTop";
 const App = () => {
   return (
     <Router>
