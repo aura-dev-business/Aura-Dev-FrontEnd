@@ -46,9 +46,10 @@ const ServicesSection = () => {
         if (!response.ok) {
           throw new Error(`HTTP error! status: ${response.status}`);
         }
+        console.log("Starting");
         const data = await response.json();
         console.log(data);
-        
+        console.log("Ending");
         // Validate and format the data
         const formattedData = data.map(service => ({
           id: service.id,
