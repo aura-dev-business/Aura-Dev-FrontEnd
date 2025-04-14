@@ -43,6 +43,7 @@ const ServicesSection = () => {
     const fetchServices = async () => {
       try {
         const response = await fetch(`${import.meta.env.VITE_API_BASE_URL}/api/services`);
+        console.log(response);
         if (!response.ok) {
           throw new Error(`HTTP error! status: ${response.status}`);
         }
