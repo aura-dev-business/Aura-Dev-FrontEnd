@@ -42,7 +42,7 @@ const ServicesSection = () => {
   useEffect(() => {
     const fetchServices = async () => {
       try {
-        const response = await fetch("https://9a89-2401-4900-91de-2846-88fe-6373-5b8b-570a.ngrok-free.app/api/services");
+        const response = await fetch(`${import.meta.env.VITE_API_BASE_URL}/api/services`);
         if (!response.ok) {
           throw new Error(`HTTP error! status: ${response.status}`);
         }
