@@ -183,15 +183,7 @@ const ServicesSection = () => {
                   </ul>
                 )}
 
-                <a
-                  href="#"
-                  className={`inline-flex items-center text-sm font-medium transition-colors duration-300 ${
-                    isActive ? 'text-red-800' : 'text-gray-600 hover:text-red-800'
-                  }`}
-                >
-                  Learn more
-                  <ArrowRight size={16} className="ml-1" />
-                </a>
+
               </motion.div>
             );
           })}

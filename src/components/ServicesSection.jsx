@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Globe, Code, Palette, LineChart, MessageSquare, Smartphone, Loader, AlertCircle } from "lucide-react";
 import { motion } from 'framer-motion';
-import './Scrolling.css';
+import './Scrolling.css'; // Make sure this includes scroll-snap CSS
 
 const iconMap = { Globe, Code, Palette, LineChart, MessageSquare, Smartphone };
 
@@ -52,28 +52,39 @@ const ServicesSection = () => {
     fetchServices();
   }, []);
 
-  // Auto-scroll logic
   useEffect(() => {
     const interval = setInterval(() => {
       if (scrollContainerRef.current) {
-        const { scrollWidth, clientWidth } = scrollContainerRef.current;
+        const card = scrollContainerRef.current.querySelector('.scroll-item');
+        const cardWidth = card?.offsetWidth || 0;
+        const gap = 24; // Tailwind space-x-6 = 1.5rem = 24px
+
         scrollContainerRef.current.scrollBy({
-          left: 300,
+          left: cardWidth + gap,
           behavior: 'smooth',
         });
 
-        setCurrentIndex(prev => (prev + 1) % services.length);
+        setCurrentIndex((prev) => (prev + 1) % services.length);
       }
-    }, 3000); // Adjust time interval as needed
+    }, 3000);
 
     return () => clearInterval(interval);
   }, [services]);
 
-  // Function for dot navigation
   const handleDotClick = (index) => {
     if (scrollContainerRef.current) {
-      const scrollAmount = index * 300;
-      scrollContainerRef.current.scrollTo({ left: scrollAmount, behavior: 'smooth' });
+      const card = scrollContainerRef.current.querySelector('.scroll-item');
+      const cardWidth = card?.offsetWidth || 0;
+      const gap = 24;
+      const scrollAmount = index * (cardWidth + gap);
+
+      // Adjust scroll behavior based on screen size
+      const mobileAdjustment = window.innerWidth <= 768 ? cardWidth / 2 : 0;
+
+      scrollContainerRef.current.scrollTo({
+        left: scrollAmount - mobileAdjustment,
+        behavior: 'smooth',
+      });
       setCurrentIndex(index);
     }
   };
@@ -113,8 +124,11 @@ const ServicesSection = () => {
       </motion.div>
 
       <div className="relative overflow-hidden">
-        {/* Scrollable Services Container */}
-        <div ref={scrollContainerRef} className="flex overflow-x-auto space-x-6 scrollbar-hide px-4" style={{ overflowY: 'hidden' }}>
+        <div
+          ref={scrollContainerRef}
+          className="scroll-container flex overflow-x-auto space-x-6 scrollbar-hide px-4"
+          style={{ overflowY: 'hidden', scrollSnapType: 'x mandatory' }}
+        >
           {services.map((service, index) => {
             const IconComponent = getIconComponent(service.imageUrl);
             return (
@@ -122,9 +136,14 @@ const ServicesSection = () => {
                 key={service.id}
                 initial={{ opacity: 0, y: 50 }}
                 whileInView={{ opacity: 1, y: 0 }}
-                transition={{ delay: index * 0.1, duration: 2 }}
+                transition={{
+                  delay: index * 0.1, // Staggered effect for animations
+                  duration: 0.6,      // Updated duration for snappier animations
+                  ease: "easeOut"     // Added smooth easing
+                }}
                 viewport={{ once: true }}
-                className="bg-white p-8  mb-8 rounded-xl shadow-md hover:shadow-2xl hover:scale-110 hover:-rotate-1 hover:bg-white transition-transform duration-300 flex-shrink-0 w-96"
+                className="scroll-item bg-white p-6 mb-8 rounded-xl shadow-md hover:shadow-2xl hover:scale-105 transition-transform duration-300 flex-shrink-0 w-80 md:w-96"
+                style={{ scrollSnapAlign: 'center' }}
               >
                 <div className="w-16 h-16 rounded-full bg-red-50 text-red-800 flex items-center justify-center mb-6">
                   {IconComponent ? <IconComponent size={28} /> : <Globe size={28} />}
@@ -136,7 +155,6 @@ const ServicesSection = () => {
           })}
         </div>
 
-        {/* Dot Navigation */}
         <div className="flex justify-center mt-6 space-x-2">
           {services.map((_, index) => (
             <button
@@ -147,9 +165,11 @@ const ServicesSection = () => {
           ))}
         </div>
 
-        {/* View All Services Button */}
         <motion.div className="text-center mt-16">
-          <button onClick={() => navigate('/services')} className="px-8 py-4 bg-red-800 text-white rounded-lg hover:bg-red-700 transition-colors shadow-md hover:shadow-lg flex items-center mx-auto">
+          <button
+            onClick={() => navigate('/services')}
+            className="px-8 py-4 bg-red-800 text-white rounded-lg hover:bg-red-700 transition-colors shadow-md hover:shadow-lg flex items-center mx-auto"
+          >
             <span>View All Services</span>
           </button>
         </motion.div>
