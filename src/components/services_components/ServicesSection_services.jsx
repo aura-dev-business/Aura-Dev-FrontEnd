@@ -57,7 +57,8 @@ const ServicesSection = () => {
   useEffect(() => {
     const fetchServices = async () => {
       try {
-        const response = await fetch("http://localhost:8080/api/services"); // Replace with your API endpoint
+        const response = await fetch(`${import.meta.env.VITE_API_BASE_URL}/api/services`);
+
         if (!response.ok) {
           throw new Error(`HTTP error! status: ${response.status}`);
         }
