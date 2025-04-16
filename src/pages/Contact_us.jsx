@@ -42,7 +42,7 @@ const ContactPage = () => {
   useEffect(() => {
     const fetchServices = async () => {
       try {
-        const response = await fetch("http://localhost:8080/api/services");
+        const response = await fetch(`${import.meta.env.VITE_API_BASE_URL}/api/services`);
         const data = await response.json();
         const formattedServices = data.map(service => ({
           value: service.name.toLowerCase().replace(/\s+/g, '-'),
@@ -76,7 +76,7 @@ const ContactPage = () => {
     setStatus({ submitted: false, submitting: true, info: { error: false, msg: null } });
 
     try {
-      const response = await fetch("http://localhost:8080/api/contact", {
+      const response = await fetch(`${import.meta.env.VITE_API_BASE_URL}/api/contact`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(formData),
