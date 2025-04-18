@@ -149,7 +149,17 @@ const ServicesSection = () => {
                   {IconComponent ? <IconComponent size={28} /> : <Globe size={28} />}
                 </div>
                 <h3 className="text-xl font-bold text-gray-900 mb-3">{service.name}</h3>
-                <p className="text-gray-600 mb-6">{service.description}</p>
+                <p className="text-gray-600 mb-6">
+                  {service.description.length > 50
+                    ? `${service.description.substring(0, 50)}...`
+                    : service.description}
+                  <span
+                    onClick={() => navigate(`/services/${service.id}`)}
+                    className="text-red-800 cursor-pointer ml-2 hover:underline"
+                  >
+                    Read More
+                  </span>
+                </p>
               </motion.div>
             );
           })}
