@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
+import tech from '../assets/tech.jpg'
 import { 
   Loader, 
   AlertCircle, 
@@ -136,17 +137,17 @@ const ServiceDetail = () => {
               
               {/* Image Section */}
               <div className="lg:w-2/5 relative">
-                <div className="h-full">
+                <div className="h-30">
                   {service.imageUrl ? (
                     <img 
-                      src={service.imageUrl} 
+                      src={tech} 
                       alt={service.name}
-                      className="w-[70vh] h-72 object-center shadow-inner"
-                    />
+                      div className="w-[70vh] h-[40vh] mt-8 border-[10px]   border-black hover:scale-105 hover:  transition-transform duration-500" 
+                      />
                   ) : (
                     <div className="w-full h-full bg-gradient-to-br from-red-100 to-red-50 flex items-center justify-center p-8">
                       <img 
-                        src={service.imageUrl} 
+                        src={tech} 
                         alt={`${service.name} illustration`}
                         className="w-full h-full object-contain opacity-70"
                       />
