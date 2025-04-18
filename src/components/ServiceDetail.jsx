@@ -56,7 +56,7 @@ const ServiceDetail = () => {
 
   return (
     <>
-      <Navigation />
+      
       <motion.div
         initial={{ opacity: 0, y: 50 }}
         animate={{ opacity: 1, y: 0 }}
@@ -80,7 +80,6 @@ const ServiceDetail = () => {
           </div>
         </div>
       </motion.div>
-      <Footer />
     </>
   );
 };
