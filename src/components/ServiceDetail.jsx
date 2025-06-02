@@ -17,7 +17,7 @@ import {
 import { motion } from 'framer-motion';
 import Footer from './Footer'; // Assuming you have a Footer component
 import Navigation from './Navigation'; // Assuming you have a Navigation component
-import logo from '../assets/bg.jpg';
+import logo from '../assets/bg.webp';
 
 const ServiceDetail = () => {
   const { id } = useParams(); // Get the service ID from the URL
@@ -28,7 +28,7 @@ const ServiceDetail = () => {
   useEffect(() => {
     const fetchService = async () => {
       try {
-        const response = await fetch(`${import.meta.env.VITE_API_BASE_URL}/api/services/${id}`);
+        const response = await fetch(`http://localhost:8080/api/services/${id}`);
         if (!response.ok) {
           throw new Error(`HTTP error! status: ${response.status}`);
         }
@@ -110,7 +110,7 @@ const ServiceDetail = () => {
 
   return (
     <>
-      <Navigation />
+
       
       <motion.div
         initial={{ opacity: 0, y: 50 }}

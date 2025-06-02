@@ -1,6 +1,5 @@
 import React from "react";
 import { Search, PenTool, Code, Rocket, ChevronRight } from "lucide-react";
-import { motion } from "framer-motion";
 
 const WorkProcess = () => {
   const processes = [
@@ -35,85 +34,124 @@ const WorkProcess = () => {
   ];
 
   return (
-    <section className="py-24 relative overflow-hidden bg-gradient-to-b from-gray-50 to-white">
-      <div className="absolute top-0 left-0 w-full h-24 bg-gradient-to-b from-white to-transparent"></div>
-      <div className="absolute inset-y-0 left-0 w-1/3 bg-red-50 opacity-30 blur-3xl -translate-x-1/2 rounded-full"></div>
+    <section className=" py-24 relative overflow-hidden">
+      {/* Animated gradient background */}
+      <div className="absolute inset-0 bg-gradient-to-br from-slate-950 via-slate-900 to-slate-950">
+        <div className="absolute inset-0 bg-gradient-to-t from-black/20 via-transparent to-black/20"></div>
+      </div>
+      
+      {/* Floating geometric shapes */}
+      <div className="absolute top-20 left-10 w-32 h-32 bg-gradient-to-br from-red-500/20 to-pink-500/20 rounded-full blur-xl animate-pulse"></div>
+      <div className="absolute top-40 right-20 w-24 h-24 bg-gradient-to-br from-blue-500/20 to-cyan-500/20 rounded-full blur-lg animate-bounce"></div>
+      <div className="absolute bottom-32 left-20 w-40 h-40 bg-gradient-to-br from-purple-500/20 to-indigo-500/20 rounded-full blur-2xl animate-pulse"></div>
+      <div className="absolute bottom-20 right-10 w-28 h-28 bg-gradient-to-br from-emerald-500/20 to-teal-500/20 rounded-full blur-xl animate-bounce"></div>
+      
+      {/* Grid pattern overlay */}
+      <div className="absolute inset-0 opacity-10">
+        <div className="h-full w-full" style={{
+          backgroundImage: `radial-gradient(circle at 1px 1px, rgba(255,255,255,0.3) 1px, transparent 0)`,
+          backgroundSize: '50px 50px'
+        }}></div>
+      </div>
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-        <motion.div 
-          className="text-center max-w-3xl mx-auto mb-16 font-extrabold"
-          initial={{ opacity: 0, y: 40 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6 }}
-          viewport={{ once: true }}
-        >
-          <span className="inline-block px-4 py-1 bg-red-50 rounded-full text-red-800 text-sm font-medium mb-4">
+        {/* Header section */}
+        <div className="text-center max-w-4xl mx-auto mb-20">
+          <div className="inline-flex items-center px-6 py-2 bg-white/10 backdrop-blur-sm rounded-full text-white text-sm font-medium mb-6 border border-white/20">
+            <div className="w-2 h-2 bg-red-400 rounded-full mr-3 animate-pulse"></div>
             How We Work
-          </span>
-          <h2 className="ttext-5xl md:text-6xl lg:text-6xl bg-clip-text text-transparent bg-gradient-to-r from-red-800 to-red-600 leading-tight">Our Work Process</h2>
-          <p className="text-lg text-gray-600">
-            Our proven methodology ensures quality results, timely delivery, and exceptional client satisfaction.
+          </div>
+          
+          <h2 className="text-5xl md:text-7xl lg:text-7xl font-black mb-8 leading-tight">
+            <span className="bg-gradient-to-r from-white via-gray-100 to-white bg-clip-text text-transparent">
+              Our Work
+            </span>
+            <br />
+            <span className="bg-gradient-to-r from-red-400 via-pink-400 to-purple-400 bg-clip-text text-transparent">
+              Process
+            </span>
+          </h2>
+          
+          <p className="text-xl text-gray-300 leading-relaxed max-w-2xl mx-auto">
+            Our proven methodology ensures quality results, timely delivery, and exceptional client satisfaction through every step of the journey.
           </p>
-        </motion.div>
+        </div>
 
+        {/* Process steps */}
         <div className="relative">
-          <div className="hidden md:block absolute top-32 left-0 w-full h-1 bg-gray-200 z-0"></div>
+          {/* Connection line */}
+          <div className="hidden lg:block absolute top-1/2 left-0 w-full h-px bg-gradient-to-r from-transparent via-white/30 to-transparent"></div>
 
-          <div className="grid md:grid-cols-4 gap-6 lg:gap-8">
+          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8 lg:gap-6">
             {processes.map((process, index) => (
-              <motion.div
+              <div
                 key={index}
-                className="relative z-10"
-                initial={{ opacity: 0, y: 40 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.6, delay: index * 0.2 }}
-                viewport={{ once: true }}
+                className="relative group"
               >
-                <div className="hidden md:flex absolute top-28 left-1/2 -translate-x-1/2 -translate-y-1/2 w-12 h-12 rounded-full bg-white border-4 border-gray-200 text-gray-500 items-center justify-center font-bold shadow-md">
-                  {process.step}
-                </div>
+                
+               
+                {/* Card */}
+                <div className="bg-white/10 backdrop-blur-md p-8 rounded-2xl border border-white/20 h-full flex flex-col relative overflow-hidden group-hover:bg-white/15 transition-all duration-500 group-hover:scale-105 group-hover:shadow-2xl group-hover:shadow-white/10">
+                  
 
-                <div className="group bg-white p-8 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 border border-gray-100 h-full flex flex-col relative">
-                  <div className="md:hidden absolute -top-3 -left-3 w-10 h-10 rounded-full bg-red-700 text-white flex items-center justify-center font-bold text-sm">
-                    {process.step}
+                  {/* Decorative gradient */}
+                  <div className="absolute inset-0 bg-gradient-to-br from-white/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+
+                  {/* Icon */}
+                  <div className={`w-16 h-16 rounded-2xl bg-gradient-to-br ${
+                    process.color === 'red' ? 'from-red-500/20 to-pink-500/20' :
+                    process.color === 'purple' ? 'from-purple-500/20 to-indigo-500/20' :
+                    process.color === 'blue' ? 'from-blue-500/20 to-cyan-500/20' :
+                    'from-emerald-500/20 to-teal-500/20'
+                  } flex items-center justify-center mb-6 group-hover:scale-110 group-hover:rotate-3 transition-all duration-300 relative z-10`}>
+                    <process.icon className={`${
+                      process.color === 'red' ? 'text-red-400' :
+                      process.color === 'purple' ? 'text-purple-400' :
+                      process.color === 'blue' ? 'text-blue-400' :
+                      'text-emerald-400'
+                    }`} size={28} />
                   </div>
 
-                  <div className={`w-16 h-16 rounded-2xl bg-${process.color}-50 flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300`}>
-                    <process.icon className={`text-${process.color}-600`} size={28} />
-                  </div>
-
-                  <h3 className="text-2xl font-bold text-gray-800 mb-4 group-hover:text-red-800 transition-colors duration-300">
+                  {/* Content */}
+                  <h3 className="text-2xl font-bold text-white mb-4 group-hover:text-transparent group-hover:bg-gradient-to-r group-hover:from-white group-hover:to-gray-200 group-hover:bg-clip-text transition-all duration-300 relative z-10">
                     {process.title}
                   </h3>
-                  <p className="text-gray-600 flex-grow mb-6">
+                  
+                  <p className="text-gray-300 flex-grow mb-6 leading-relaxed relative z-10">
                     {process.description}
                   </p>
 
-                  <div className="mt-auto">
-                    <a href="#" className="inline-flex items-center text-sm font-medium text-red-800 group-hover:underline">
-                      Learn more <ChevronRight size={16} className="ml-1" />
+                  {/* Learn more link */}
+                  <div className="mt-auto relative z-10">
+                    <a href="#" className="inline-flex items-center text-sm font-medium text-white/80 hover:text-white group-hover:underline transition-colors duration-300">
+                      Learn more <ChevronRight size={16} className="ml-1 group-hover:translate-x-1 transition-transform duration-300" />
                     </a>
                   </div>
 
-                  <div className={`absolute bottom-0 right-0 w-0 h-0 border-b-[40px] border-r-[40px] border-b-transparent border-r-${process.color}-100 opacity-0 group-hover:opacity-100 transition-opacity duration-300`}></div>
+                  {/* Hover effect corner */}
+                  <div className={`absolute bottom-0 right-0 w-0 h-0 transition-all duration-300 ${
+                    process.color === 'red' ? 'border-b-red-500/30 border-r-red-500/30' :
+                    process.color === 'purple' ? 'border-b-purple-500/30 border-r-purple-500/30' :
+                    process.color === 'blue' ? 'border-b-blue-500/30 border-r-blue-500/30' :
+                    'border-b-emerald-500/30 border-r-emerald-500/30'
+                  } group-hover:border-b-[40px] group-hover:border-r-[40px] border-b-transparent border-r-transparent`}></div>
                 </div>
-              </motion.div>
+              </div>
             ))}
           </div>
         </div>
 
-        <motion.div 
-          className="flex justify-center mt-16"
-          initial={{ opacity: 0, y: 30 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5 }}
-          viewport={{ once: true }}
-        >
-          <a href="/process" className="px-8 py-4 bg-red-800 text-white font-medium rounded-lg hover:bg-red-700 transition-colors shadow-lg shadow-red-800/20 hover:shadow-red-800/30">
-            Learn More About Our Process
+        {/* CTA Button */}
+        <div className="flex justify-center mt-20">
+          <a href="/process" className="group relative px-12 py-4 bg-gradient-to-r from-red-500 to-pink-500 text-white font-semibold rounded-full hover:from-red-600 hover:to-pink-600 transition-all duration-300 shadow-2xl shadow-red-500/25 hover:shadow-red-500/40 hover:scale-105 transform">
+            <span className="relative z-10">Learn More About Our Process</span>
+            <div className="absolute inset-0 bg-gradient-to-r from-white/20 to-transparent rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
           </a>
-        </motion.div>
+        </div>
       </div>
+      
+      {/* Bottom fade */}
+      <div className="absolute bottom-0 left-0 w-full h-32 bg-gradient-to-t from-slate-900 to-transparent"></div>
     </section>
   );
 };
