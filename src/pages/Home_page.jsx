@@ -14,10 +14,8 @@ import ContactComponent from '../components/ContactHero';
 const Home = () => {
   return (
     <>
-      <Navigation />
       <HeroSection />
       <ServicesSection />
-      {/*<FeaturedProjects />*/}
       <WhyChooseUs />
       <WorkProcess />
       <CTASection />

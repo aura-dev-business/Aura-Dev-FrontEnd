@@ -10,7 +10,6 @@ import ServicesSection_services from '../components/services_components/Services
 const Services = () => {
   return (
     <>
-      <Navigation />
       <ServicesSection_services/>
 
 
