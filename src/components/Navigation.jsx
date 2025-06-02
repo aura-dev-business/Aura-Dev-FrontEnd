@@ -12,6 +12,8 @@ function useTypewriter(words, delay = 150, pause = 2000) {
   const [deleting, setDeleting] = useState(false);
 
   useEffect(() => {
+    if (words.length === 0) return;
+    
     const currentWord = words[wordIndex];
     let timeout;
 
@@ -56,29 +58,42 @@ const Navigation = () => {
   const [searchResults, setSearchResults] = useState([]);
   const [isSearching, setIsSearching] = useState(false);
   const [services, setServices] = useState([]);
-
-  // Default services for typewriter effect (fallback)
-  const defaultServices = ['Web Development', 'Mobile Apps', 'Cloud Solutions', 'UI/UX design', 'Consulting'];
-  const typewriterPlaceholder = useTypewriter(services.length > 0 ? services.map(s => s.name || s.title || s) : defaultServices, 120, 1500);
+  const [isLoadingServices, setIsLoadingServices] = useState(true);
+  const [allData, setAllData] = useState([]); // Store all searchable data
 
   // Fetch services from API
   useEffect(() => {
     const fetchServices = async () => {
       try {
-        const response = await fetch('http://localhost:8080/api/services');
-        if (response.ok) {
-          const data = await response.json();
-          setServices(data);
-        } else {
-          console.error('Failed to fetch services:', response.statusText);
+        setIsLoadingServices(true);
+        const response = await fetch(`${import.meta.env.VITE_API_BASE_URL}/api/services`);
+        
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
         }
+        
+        const data = await response.json();
+        
+        // Extract service names for typewriter effect
+        const serviceNames = data.map(service => service.name || service.title || service.serviceName);
+        setServices(serviceNames.filter(Boolean)); // Remove any undefined/null values
+        
+        // Store all data for search functionality
+        setAllData(data);
+        
       } catch (error) {
         console.error('Error fetching services:', error);
+        // Fallback to default services if API fails
+        setServices(['Web Development', 'Mobile Apps', 'Cloud Solutions', 'UI/UX Design', 'Consulting']);
+      } finally {
+        setIsLoadingServices(false);
       }
     };
 
     fetchServices();
   }, []);
+
+  const typewriterPlaceholder = useTypewriter(services, 120, 1500);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -106,44 +121,60 @@ const Navigation = () => {
       setIsSearching(true);
       const timer = setTimeout(async () => {
         try {
-          const response = await fetch(`http://localhost:8080/api/services?search=${encodeURIComponent(searchQuery)}`);
-          if (response.ok) {
-            const data = await response.json();
-            // Transform API data to match expected search result format
-            const transformedResults = data.map(service => ({
-              title: service.name || service.title || 'Service',
-              description: service.description || service.summary || 'Service description',
-              path: service.path || `/services/${service.id || service.slug}`,
-              id: service.id
-            }));
-            setSearchResults(transformedResults);
-          } else {
-            console.error('Search failed:', response.statusText);
-            setSearchResults([]);
+          // First, search through local data (services)
+          const localResults = allData.filter(item => 
+            (item.name && item.name.toLowerCase().includes(searchQuery.toLowerCase())) ||
+            (item.title && item.title.toLowerCase().includes(searchQuery.toLowerCase())) ||
+            (item.description && item.description.toLowerCase().includes(searchQuery.toLowerCase())) ||
+            (item.serviceName && item.serviceName.toLowerCase().includes(searchQuery.toLowerCase()))
+          ).map(item => ({
+            title: item.name || item.title || item.serviceName,
+            description: item.description || item.shortDescription || 'Service details',
+            path: `/services/${item.id || item.slug}` // Adjust path based on your routing
+          }));
+
+          // Add static pages to search results
+          const staticPages = [
+            { title: 'About Our Team', description: 'Meet the talented developers behind AuraDev', path: '/About_Us' },
+            { title: 'Contact Us', description: 'Get in touch for your next project', path: '/contact' },
+            { title: 'Home', description: 'Welcome to AuraDev - Build Your Digital Aura', path: '/' },
+          ].filter(page => 
+            page.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
+            page.description.toLowerCase().includes(searchQuery.toLowerCase())
+          );
+
+          // Combine results
+          const combinedResults = [...localResults, ...staticPages];
+
+          // Optional: Make additional API call for more comprehensive search
+          // You can uncomment and modify this if you have a dedicated search endpoint
+          /*
+          try {
+            const searchResponse = await fetch(`http://localhost:8080/api/search?q=${encodeURIComponent(searchQuery)}`);
+            if (searchResponse.ok) {
+              const searchData = await searchResponse.json();
+              // Process and add search API results to combinedResults
+            }
+          } catch (searchError) {
+            console.error('Search API error:', searchError);
           }
+          */
+
+          setSearchResults(combinedResults);
         } catch (error) {
           console.error('Search error:', error);
-          // Fallback to client-side filtering if API fails
-          const filteredServices = services.filter(service => 
-            (service.name || service.title || '').toLowerCase().includes(searchQuery.toLowerCase()) ||
-            (service.description || service.summary || '').toLowerCase().includes(searchQuery.toLowerCase())
-          ).map(service => ({
-            title: service.name || service.title || 'Service',
-            description: service.description || service.summary || 'Service description',
-            path: service.path || `/services/${service.id || service.slug}`,
-            id: service.id
-          }));
-          setSearchResults(filteredServices);
+          setSearchResults([]);
         } finally {
           setIsSearching(false);
         }
-      }, 500);
+      }, 300); // Reduced delay for better UX
+
       return () => clearTimeout(timer);
     } else {
       setSearchResults([]);
       setIsSearching(false);
     }
-  }, [searchQuery, services]);
+  }, [searchQuery, allData]);
 
   const navItems = [
     { path: '/', label: 'Home' },
@@ -174,6 +205,8 @@ const Navigation = () => {
     if (searchQuery.trim()) {
       // Handle search submission - navigate to search results page or perform search
       console.log('Searching for:', searchQuery);
+      // You can navigate to a search results page here
+      // navigate(`/search?q=${encodeURIComponent(searchQuery)}`);
     }
   };
 
@@ -261,7 +294,9 @@ const Navigation = () => {
                     />
                     <input
                       type="text"
-                      placeholder={!isSearchFocused && !searchQuery ? `${typewriterPlaceholder}|` : 'Search services, projects...'}
+                      placeholder={!isSearchFocused && !searchQuery ? 
+                        (isLoadingServices ? 'Loading services...' : `${typewriterPlaceholder}|`) 
+                        : 'Search services, projects...'}
                       value={searchQuery}
                       onChange={(e) => setSearchQuery(e.target.value)}
                       onFocus={() => setIsSearchFocused(true)}
@@ -274,7 +309,7 @@ const Navigation = () => {
                           : 'bg-white/10 border-white/20 text-white placeholder-gray-400 hover:bg-white/15 focus:bg-white/20 focus:border-red-400/50'
                       }`}
                     />
-                    {isSearching && (
+                    {(isSearching || isLoadingServices) && (
                       <Loader2 
                         size={18} 
                         className="absolute right-4 text-red-400 animate-spin"
@@ -295,7 +330,7 @@ const Navigation = () => {
                       <div className="space-y-1">
                         {searchResults.map((result, index) => (
                           <Link
-                            key={result.id || index}
+                            key={index}
                             to={result.path}
                             className="block px-4 py-3 hover:bg-white/10 transition-colors duration-200 group"
                             onClick={() => {
@@ -466,12 +501,55 @@ const Navigation = () => {
                 <Search size={18} className="absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400" />
                 <input
                   type="text"
-                  placeholder={`${typewriterPlaceholder}|`}
+                  placeholder={isLoadingServices ? 'Loading services...' : `${typewriterPlaceholder}|`}
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
                   className="typewriter-placeholder w-full pl-12 pr-4 py-3 bg-white/10 border border-white/20 rounded-2xl text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-red-400/50 focus:border-red-400/50 backdrop-blur-sm"
                 />
+                {(isSearching || isLoadingServices) && (
+                  <Loader2 
+                    size={18} 
+                    className="absolute right-4 top-1/2 transform -translate-y-1/2 text-red-400 animate-spin"
+                  />
+                )}
               </div>
+              
+              {/* Mobile Search Results */}
+              {searchQuery && (
+                <div className="mt-4 bg-white/5 rounded-2xl border border-white/10 max-h-48 overflow-y-auto">
+                  {isSearching ? (
+                    <div className="px-4 py-6 text-center">
+                      <Loader2 size={20} className="mx-auto text-red-400 animate-spin mb-2" />
+                      <p className="text-gray-400 text-sm">Searching...</p>
+                    </div>
+                  ) : searchResults.length > 0 ? (
+                    <div className="space-y-1 p-2">
+                      {searchResults.map((result, index) => (
+                        <Link
+                          key={index}
+                          to={result.path}
+                          className="block px-3 py-2 hover:bg-white/10 transition-colors duration-200 rounded-lg"
+                          onClick={() => {
+                            setSearchQuery('');
+                            setIsOpen(false);
+                          }}
+                        >
+                          <h4 className="text-white font-medium text-sm">
+                            {result.title}
+                          </h4>
+                          <p className="text-gray-400 text-xs mt-1">
+                            {result.description}
+                          </p>
+                        </Link>
+                      ))}
+                    </div>
+                  ) : (
+                    <div className="px-4 py-6 text-center">
+                      <p className="text-gray-400 text-sm">No results found</p>
+                    </div>
+                  )}
+                </div>
+              )}
             </div>
 
             {/* Menu Items */}
