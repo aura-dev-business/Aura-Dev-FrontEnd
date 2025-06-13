@@ -22,62 +22,46 @@ export default function ContactComponent() {
     setSubmitted(false);
     setError(false);
 
-    const payload = {
-      name: formData.name,
-      email: formData.email,
-      message: formData.message,
-      phone: null,
-      subject: null,
-      service: null,
-    };
-
     try {
-      const response = await fetch('http://localhost:8080/api/contact', {
-        method: "POST",
+      const response = await fetch(`${import.meta.env.VITE_API_BASE_URL}/api/contact`, {
+        method: 'POST',
         headers: {
-          "Content-Type": "application/json",
+          'Content-Type': 'application/json',
         },
-        body: JSON.stringify(payload),
+        body: JSON.stringify(formData),
       });
 
       if (!response.ok) {
-        throw new Error("Failed to submit the form");
+        throw new Error('Failed to send message');
       }
 
-      setFormData({ name: "", email: "", message: "" });
+      setFormData({ name: '', email: '', message: '' });
       setIsSubmitting(false);
       setSubmitted(true);
-
       setTimeout(() => setSubmitted(false), 5000);
-    } catch (error) {
-      console.error("Error submitting the form:", error);
+    } catch (err) {
+      console.error('Error submitting form:', err);
       setIsSubmitting(false);
       setError(true);
-      
       setTimeout(() => setError(false), 5000);
     }
   };
 
   return (
-    <div className=" relative bg-gradient-to-br from-slate-950 via-slate-900 to-slate-950 to-slate-900">
-      {/* Subtle Background Pattern */}
+    <div className="relative bg-gradient-to-br from-slate-950 via-slate-900 to-slate-950 to-slate-900">
       <div className="absolute inset-0">
         <svg className="w-full h-full opacity-20" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
           <defs>
             <pattern id="grid" width="10" height="10" patternUnits="userSpaceOnUse">
-              <path d="M 10 0 L 0 0 0 10" fill="none" stroke="rgba(255,255,255,0.1)" strokeWidth="0.5"/>
+              <path d="M 10 0 L 0 0 0 10" fill="none" stroke="rgba(255,255,255,0.1)" strokeWidth="0.5" />
             </pattern>
           </defs>
           <rect width="100%" height="100%" fill="url(#grid)" />
         </svg>
       </div>
 
-
-      {/* Main Content */}
-      <div className="relative z-10 flex items-center justify-center  p-8">
+      <div className="relative z-10 flex items-center justify-center p-8">
         <div className="max-w-6xl w-full">
-          
-          {/* Header */}
           <div className="text-center mb-16">
             <h1 className="text-6xl md:text-7xl font-bold text-white mb-6">
               Get in <span className="bg-gradient-to-r from-purple-400 to-pink-400 bg-clip-text text-transparent">Touch</span>
@@ -87,14 +71,11 @@ export default function ContactComponent() {
             </p>
           </div>
 
-          {/* Contact Section */}
           <div className="grid grid-cols-1 lg:grid-cols-5 gap-8">
-            
-            {/* Contact Info */}
             <div className="lg:col-span-2 space-y-6">
               <div className="bg-white bg-opacity-5 backdrop-blur-sm rounded-2xl p-8 border border-white border-opacity-10">
                 <h3 className="text-2xl font-semibold text-white mb-8">Contact Information</h3>
-                
+
                 <div className="space-y-6">
                   <div className="flex items-center space-x-4 group cursor-pointer">
                     <div className="w-12 h-12 bg-gradient-to-r from-purple-500 to-pink-500 rounded-full flex items-center justify-center group-hover:scale-110 transition-transform">
@@ -133,7 +114,6 @@ export default function ContactComponent() {
               </div>
             </div>
 
-            {/* Contact Form */}
             <div className="lg:col-span-3">
               <div className="bg-white bg-opacity-5 backdrop-blur-sm rounded-2xl p-8 border border-white border-opacity-10">
                 {submitted ? (
@@ -153,7 +133,7 @@ export default function ContactComponent() {
                     <p className="text-gray-300">Please try again later or contact us directly via email.</p>
                   </div>
                 ) : (
-                  <div className="space-y-6">
+                  <form onSubmit={handleSubmit} className="space-y-6">
                     <div>
                       <label className="block text-white font-medium mb-2">Name</label>
                       <input
@@ -194,7 +174,7 @@ export default function ContactComponent() {
                     </div>
 
                     <button
-                      onClick={handleSubmit}
+                      type="submit"
                       disabled={isSubmitting}
                       className="w-full border hover:to-pink-700 text-white font-semibold py-4 px-6 rounded-lg transition-all duration-300 flex items-center justify-center space-x-2 disabled:opacity-50 disabled:cursor-not-allowed"
                     >
@@ -210,7 +190,7 @@ export default function ContactComponent() {
                         </>
                       )}
                     </button>
-                  </div>
+                  </form>
                 )}
               </div>
             </div>
