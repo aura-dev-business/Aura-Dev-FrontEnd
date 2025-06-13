@@ -42,7 +42,7 @@ const ContactPage = () => {
   useEffect(() => {
     const fetchServices = async () => {
       try {
-        const response = await fetch(`${import.meta.env.VITE_API_BASE_URL}/api/services`);
+        const response = await fetch(`${import.meta.env.VITE_API_BASE_URL}/api/contact`);
         const data = await response.json();
         const formattedServices = data.map(service => ({
           value: service.name.toLowerCase().replace(/\s+/g, '-'),
