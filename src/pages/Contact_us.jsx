@@ -1,198 +1,38 @@
-// Imports (unchanged)
-import React, { useState, useEffect } from 'react';
-import { Mail, Phone, MapPin, MessageSquare, Clock, Send, Check, AlertCircle } from 'lucide-react';
-import { FaFacebookF, FaTwitter, FaLinkedinIn, FaInstagram } from 'react-icons/fa';
-import SuccessModal from '../components/SuccessModal';
-import FAQ from '../components/FAQ';
-import { motion } from 'framer-motion';
+import { useState } from 'react';
+import { ArrowUpRight, Mail, MapPin, Phone } from 'lucide-react';
+import './StudioPages.css';
 
-// Animation Variants
-const fadeUp = {
-  hidden: { opacity: 0, y: 30 },
-  visible: { opacity: 1, y: 0, transition: { duration: 0.6 } }
-};
+const initialForm = { name: '', email: '', service: '', message: '' };
 
-const ContactPage = () => {
-  const [formData, setFormData] = useState({
-    name: '',
-    email: '',
-    phone: '',
-    subject: '',
-    message: '',
-    service: ''
-  });
+export default function ContactPage() {
+  const [form, setForm] = useState(initialForm);
+  const [status, setStatus] = useState('idle');
+  const [message, setMessage] = useState('');
+  const apiBase = import.meta.env.VITE_API_BASE_URL;
 
-  const [status, setStatus] = useState({
-    submitted: false,
-    submitting: false,
-    info: { error: false, msg: null }
-  });
-
-  const [services, setServices] = useState([]);
-  const [loadingServices, setLoadingServices] = useState(true);
-  const [isModalOpen, setIsModalOpen] = useState(false);
-
-  const icons = {
-    facebook: <FaFacebookF />,
-    twitter: <FaTwitter />,
-    linkedin: <FaLinkedinIn />,
-    instagram: <FaInstagram />
-  };
-
-  useEffect(() => {
-    const fetchServices = async () => {
-      try {
-        const response = await fetch(`${import.meta.env.VITE_API_BASE_URL}/api/contact`);
-        const data = await response.json();
-        const formattedServices = data.map(service => ({
-          value: service.name.toLowerCase().replace(/\s+/g, '-'),
-          label: service.name
-        }));
-        setServices(formattedServices);
-        localStorage.setItem("services", JSON.stringify(formattedServices)); // 🔄 Save in cache
-        setLoadingServices(false);
-      } catch (error) {
-        console.error("Failed to fetch services:", error);
-        setLoadingServices(false);
-      }
-    };
-
-    const cachedServices = localStorage.getItem("services");
-    if (cachedServices) {
-      setServices(JSON.parse(cachedServices));
-      setLoadingServices(false);
-    } else {
-      fetchServices();
+  const submit = async (event) => {
+    event.preventDefault();
+    setStatus('submitting');
+    setMessage('');
+    if (!apiBase) {
+      setStatus('error');
+      setMessage('Contact delivery is not configured yet. Please email us directly at auradevbusiness@gmail.com.');
+      return;
     }
-  }, []);
-
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setFormData({ ...formData, [name]: value });
-  };
-
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    setStatus({ submitted: false, submitting: true, info: { error: false, msg: null } });
-
     try {
-      const response = await fetch(`${import.meta.env.VITE_API_BASE_URL}/api/contact`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(formData),
+      const response = await fetch(`${apiBase}/api/contact`, {
+        method: 'POST', headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ ...form, subject: `Website enquiry — ${form.service || 'General'}` }),
       });
-
-      if (!response.ok) throw new Error("Failed to submit the form");
-
-      await response.json();
-      setStatus({ submitted: true, submitting: false, info: { error: false, msg: "Message sent successfully!" } });
-
-      setFormData({ name: "", email: "", phone: "", subject: "", message: "", service: "" });
-
-      setIsModalOpen(true);
-      setTimeout(() => setIsModalOpen(false), 5000);
-    } catch (error) {
-      setStatus({ submitted: false, submitting: false, info: { error: true, msg: "Something went wrong. Please try again later." } });
+      if (!response.ok) throw new Error('Request failed');
+      setForm(initialForm);
+      setStatus('success');
+      setMessage('Thanks — your message is on its way. We’ll be in touch soon.');
+    } catch {
+      setStatus('error');
+      setMessage('We could not send your message. Please try again or email us directly.');
     }
   };
 
-  return (
-    <div className="min-h-screen bg-gradient-to-b from-gray-50 to-white pb-20">
-      <SuccessModal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} />
-
-      {/* Hero Section */}
-      <section className="relative bg-red-800 text-white py-24 md:py-32 overflow-hidden">
-        <div className="absolute inset-0 opacity-10">
-          <div className="absolute -right-20 -top-20 w-96 h-96 rounded-full bg-red-500"></div>
-          <div className="absolute -left-20 -bottom-20 w-96 h-96 rounded-full bg-red-600"></div>
-        </div>
-
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 text-center">
-          <motion.h1
-            className="text-4xl md:text-5xl font-bold mb-6"
-            initial="hidden"
-            animate="visible"
-            variants={fadeUp}
-          >
-            Get in Touch
-          </motion.h1>
-
-          <motion.p
-            className="text-xl md:text-2xl opacity-90 max-w-3xl mx-auto"
-            initial="hidden"
-            animate="visible"
-            variants={fadeUp}
-          >
-            We'd love to hear from you. Let's start a conversation about your digital needs.
-          </motion.p>
-        </div>
-      </section>
-
-      {/* Contact Form and Info */}
-      <motion.section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 -mt-16 relative z-20" initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeUp}>
-        <motion.div className="bg-white rounded-xl shadow-xl overflow-hidden" variants={fadeUp}>
-          <div className="grid grid-cols-1 lg:grid-cols-5">
-            {/* Contact Info */}
-            <motion.div className="lg:col-span-2 bg-gradient-to-br from-red-800 to-red-900 text-white p-8 lg:p-12" variants={fadeUp}>
-              <h3 className="text-2xl font-bold mb-6">Contact Information</h3>
-              <p className="opacity-80 mb-8">Fill out the form and our team will get back to you within 24 hours.</p>
-
-              <div className="space-y-6">
-                <div className="flex items-start"><div className="bg-white/10 p-3 rounded-full mr-4"><Mail size={20} /></div><div><p className="text-sm opacity-70">Email</p><a href="mailto:contact@auradev.com" className="hover:underline">auradevbusiness@gmail.com</a></div></div>
-                <div className="flex items-start"><div className="bg-white/10 p-3 rounded-full mr-4"><Phone size={20} /></div><div><p className="text-sm opacity-70">Phone</p><a href="tel:+91" className="hover:underline">+91 9188296027</a></div></div>
-                <div className="flex items-start"><div className="bg-white/10 p-3 rounded-full mr-4"><MapPin size={20} /></div><div><p className="text-sm opacity-70">Address</p><address className="not-italic">Bangalore<br />Karnataka, India</address></div></div>
-                <div className="flex items-start"><div className="bg-white/10 p-3 rounded-full mr-4"><Clock size={20} /></div><div><p className="text-sm opacity-70">Business Hours</p><p>Monday - Friday: 9AM - 5PM</p></div></div>
-              </div>
-
-              {/* Social Media */}
-              <h4 className="text-lg font-semibold mt-10 mb-4">Connect With Us</h4>
-              <div className="flex space-x-4">
-                {Object.keys(icons).map((platform) => (
-                  <a key={platform} href="#" aria-label={platform} className="bg-white/10 hover:bg-white/20 transition-colors w-10 h-10 rounded-full flex items-center justify-center text-white text-xl">
-                    {icons[platform]}
-                  </a>
-                ))}
-              </div>
-            </motion.div>
-
-            {/* Contact Form */}
-            <motion.div className="lg:col-span-3 p-8 lg:p-12" variants={fadeUp}>
-              <h3 className="text-2xl font-bold text-gray-800 mb-6">Send us a message</h3>
-
-              {status.info.msg && (
-                <motion.div className={`mb-6 p-4 rounded-lg flex items-start ${status.info.error ? 'bg-red-50 text-red-800' : 'bg-green-50 text-green-800'}`} variants={fadeUp}>
-                  {status.info.error ? <AlertCircle size={20} className="mr-3 mt-0.5" /> : <Check size={20} className="mr-3 mt-0.5" />}
-                  <span>{status.info.msg}</span>
-                </motion.div>
-              )}
-
-              <motion.form onSubmit={handleSubmit} variants={fadeUp}>
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 mb-6">
-                  <div><label htmlFor="name" className="block text-sm font-medium text-gray-700 mb-1">Full Name <span className="text-red-600">*</span></label><input type="text" id="name" name="name" required value={formData.name} onChange={handleChange} className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-red-500" placeholder="Enter Your Name" /></div>
-                  <div><label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-1">Email <span className="text-red-600">*</span></label><input type="email" id="email" name="email" required value={formData.email} onChange={handleChange} className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-red-500" placeholder="you@example.com" /></div>
-                  <div><label htmlFor="phone" className="block text-sm font-medium text-gray-700 mb-1">Phone</label><input type="tel" id="phone" name="phone" value={formData.phone} onChange={handleChange} className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-red-500" placeholder="+91 123456789" /></div>
-                  <div><label htmlFor="service" className="block text-sm font-medium text-gray-700 mb-1">Service</label><select id="service" name="service" value={formData.service} onChange={handleChange} className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-red-500">
-                    <option value="">Select a service</option>
-                    {loadingServices ? <option disabled>Loading services...</option> : services.map(service => (
-                      <option key={service.value} value={service.value}>{service.label}</option>
-                    ))}
-                  </select></div>
-                </div>
-
-                <div className="mb-6"><label htmlFor="subject" className="block text-sm font-medium text-gray-700 mb-1">Subject <span className="text-red-600">*</span></label><input type="text" id="subject" name="subject" required value={formData.subject} onChange={handleChange} className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-red-500" placeholder="Subject..." /></div>
-
-                <div className="mb-6"><label htmlFor="message" className="block text-sm font-medium text-gray-700 mb-1">Message <span className="text-red-600">*</span></label><textarea id="message" name="message" rows="5" required value={formData.message} onChange={handleChange} className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-red-500" placeholder="Your message..." /></div>
-
-                <motion.button type="submit" disabled={status.submitting} variants={fadeUp} className={`inline-flex items-center justify-center px-6 py-3 rounded-lg bg-red-800 text-white font-medium transition-all duration-300 ${status.submitting ? 'opacity-70 cursor-not-allowed' : 'hover:bg-red-700 hover:shadow-lg'}`}>
-                  {status.submitting ? (<><div className="animate-spin rounded-full h-5 w-5 border-b-2 border-white mr-3"></div> Sending...</>) : (<>Send Message <Send size={18} className="ml-2" /></>)}
-                </motion.button>
-              </motion.form>
-            </motion.div>
-          </div>
-        </motion.div>
-      </motion.section>
-    </div>
-  );
-};
-
-export default ContactPage;
+  return <main className="studio-page"><section className="studio-hero studio-grid"><div className="studio-shell"><p className="studio-kicker">A good place to start</p><h1>Let’s make<br/><em>something useful.</em></h1><p>Tell us where you are, where you want to go, and the work you need help with. We’ll take it from there.</p></div></section><section className="studio-shell studio-contact"><div className="studio-contact-info"><p className="studio-rule">Contact AuraDev <span>01</span></p><h2>Start the<br/><em>conversation.</em></h2><p><Mail size={16}/> <a href="mailto:auradevbusiness@gmail.com">auradevbusiness@gmail.com</a></p><p><Phone size={16}/> <a href="tel:+919188296027">+91 9188296027</a></p><p><MapPin size={16}/> Bangalore, Karnataka, India</p></div><form className="studio-form" onSubmit={submit}><label htmlFor="name">Your name</label><input id="name" required value={form.name} onChange={(e) => setForm({ ...form, name: e.target.value })} placeholder="Your full name"/><label htmlFor="email">Email address</label><input id="email" type="email" required value={form.email} onChange={(e) => setForm({ ...form, email: e.target.value })} placeholder="you@company.com"/><label htmlFor="service">What can we help with?</label><select id="service" value={form.service} onChange={(e) => setForm({ ...form, service: e.target.value })}><option value="">Choose a service</option><option>Digital product</option><option>Brand experience</option><option>Business system</option><option>Digital growth</option></select><label htmlFor="message">A little about the project</label><textarea id="message" rows="5" required value={form.message} onChange={(e) => setForm({ ...form, message: e.target.value })} placeholder="What are you looking to create?"/>{message && <p role="status" className={status === 'error' ? 'text-red-700 mb-5' : 'text-green-700 mb-5'}>{message}</p>}<button className="studio-button" disabled={status === 'submitting'}>{status === 'submitting' ? 'Sending…' : <>Send message <ArrowUpRight size={17}/></>}</button></form></section></main>;
+}

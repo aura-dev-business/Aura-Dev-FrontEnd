@@ -1,0 +1,2 @@
+/* Deliberate in-page motion. The splash timing is intentionally not affected. */
+header{animation-duration:.9s}.aura-hero-inner,.studio-hero .studio-shell{animation-duration:1.35s;animation-delay:.15s}.aura-grid,.studio-grid{animation-duration:28s}.aura-primary-link,.studio-button,.aura-footer-email{transition-duration:.42s}.aura-service,.studio-card{transition-duration:.48s}.aura-service svg,.studio-card svg{transition-duration:.52s}.aura-process-row,.studio-process-row{transition-duration:.4s}.aura-footer nav a{transition-duration:.35s}
