@@ -1,25 +1,6 @@
 import React from 'react';
-import Navigation from '../components/Navigation';
-import Footer from '../components/Footer';
-import { Globe, Code, Palette, LineChart, MessageSquare, Smartphone } from 'lucide-react';
-import HeroSection_services from '../components/services_components/HeroSection_services';
-import Process_section from '../components/services_components/Process_section';
-import ServicesSection_services from '../components/services_components/ServicesSection_services';
-
-
-const Services = () => {
-  return (
-    <>
-      <ServicesSection_services/>
-
-
-
-      {/* Process Section */}
-
-
-    </>
-  );
-};
-
-
-export default Services;
+import { ArrowUpRight, Code2, Layers3, Megaphone, Workflow } from 'lucide-react';
+import { Link } from 'react-router-dom';
+import './StudioPages.css';
+const services=[['Digital products','Purpose-built websites, portals, and apps that help your business move faster.',Code2],['Brand experiences','Identity and interface systems that make a meaningful first impression.',Layers3],['Business systems','Automation and platforms that simplify the work behind the scenes.',Workflow],['Digital growth','Launch support and ongoing improvements focused on what performs.',Megaphone]];
+export default function Services(){return <main className="studio-page"><section className="studio-hero studio-grid"><div className="studio-shell"><p className="studio-kicker">AuraDev capabilities</p><h1>Made to work.<br/><em>Made to matter.</em></h1><p>We connect sharp thinking, considered design, and dependable technology to solve the problems that matter to your business.</p></div></section><section className="studio-section studio-shell"><p className="studio-rule">Our services <span>01</span></p><div className="studio-lead"><h2>One partner for<br/>your digital <em>next.</em></h2><p>Choose a focused engagement or bring us in across the entire journey. Either way, every decision starts with your goals.</p></div><div className="studio-cards">{services.map(([title,text,Icon],i)=><article className="studio-card" key={title}><Icon size={24}/><h3>0{i+1} — {title}</h3><p>{text}</p></article>)}</div></section><section className="studio-split"><div className="studio-shell"><p className="studio-rule">A connected approach <span>02</span></p><div className="studio-split-grid"><h2>Good work is never<br/><em>one-size-fits-all.</em></h2><div><p>We build a team and a roadmap around the actual opportunity—giving you just the right level of creative and technical support.</p><Link to="/contact" className="studio-button">Discuss your project <ArrowUpRight size={17}/></Link></div></div></div></section></main>}
