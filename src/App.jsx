@@ -1,5 +1,5 @@
 import React, { Suspense, lazy, useEffect, useState } from "react";
-import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom";
+import { BrowserRouter as Router, Routes, Route, Navigate, useLocation } from "react-router-dom";
 import Home from "./pages/Home_page";
 const Services = lazy(() => import("./pages/Service_page"));
 const About_us = lazy(() => import("./pages/About_us"));
@@ -13,6 +13,14 @@ const ServiceDetail = lazy(() => import("./components/ServiceDetail"));
 import "./components/StudioOverrides.css";
 import "./components/TrustAnimations.css";
 import "./components/SlowMotion.css";
+import "./components/GlobalLetterReveal.css";
+import "./components/ResponsiveTypography.css";
+import "./components/MobilePolish.css";
+import "./components/MobileTypographyFix.css";
+import "./components/MobileLayout.css";
+import "./components/ControlReset.css";
+import "./components/MobileTypeSystem.css";
+import "./components/HomeHeroDesktop.css";
 
 const PageLoader = () => (
   <div className="aura-page-loader" role="status" aria-live="polite">
@@ -27,6 +35,64 @@ const PageLoader = () => (
   </div>
 );
 
+const ContentLetterReveal = () => {
+  const location = useLocation();
+
+  useEffect(() => {
+    const animateText = (target) => {
+      if (target.dataset.letterAnimated || target.querySelector('.letter-reveal')) return;
+      const text = target.textContent;
+      if (!text?.trim()) return;
+      target.dataset.letterAnimated = 'true';
+      target.setAttribute('aria-label', text);
+      const textNodes = [];
+      const walker = document.createTreeWalker(target, NodeFilter.SHOW_TEXT, {
+        acceptNode: (node) => node.textContent.trim() ? NodeFilter.FILTER_ACCEPT : NodeFilter.FILTER_REJECT,
+      });
+      while (walker.nextNode()) textNodes.push(walker.currentNode);
+      let letterIndex = 0;
+      textNodes.forEach((node) => {
+        const fragment = document.createDocumentFragment();
+        [...node.textContent].forEach((letter) => {
+          const span = document.createElement('span');
+          span.className = 'global-letter';
+          span.setAttribute('aria-hidden', 'true');
+          span.textContent = letter === ' ' ? '\u00a0' : letter;
+          span.style.setProperty('--letter-delay', `${Math.min(letterIndex * 15, 1250)}ms`);
+          fragment.appendChild(span);
+          letterIndex += 1;
+        });
+        node.replaceWith(fragment);
+      });
+    };
+
+    const viewportObserver = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (!entry.isIntersecting) return;
+        animateText(entry.target);
+        viewportObserver.unobserve(entry.target);
+      });
+    }, { threshold: 0.16, rootMargin: '0px 0px -8% 0px' });
+
+    const observeNewText = () => {
+    const targets = document.querySelectorAll('main h1, main h2, main h3, main h4, main p, main li, footer h2, footer p');
+      targets.forEach((target) => {
+        if (!target.dataset.letterObserved && !target.dataset.letterAnimated && !target.querySelector('.letter-reveal') && target.textContent?.trim()) {
+          target.dataset.letterObserved = 'true';
+          viewportObserver.observe(target);
+        }
+      });
+    };
+
+    const frame = window.requestAnimationFrame(observeNewText);
+    const mutationObserver = new MutationObserver(observeNewText);
+    mutationObserver.observe(document.body, { childList: true, subtree: true });
+    return () => { window.cancelAnimationFrame(frame); viewportObserver.disconnect(); mutationObserver.disconnect(); };
+  }, [location.pathname]);
+
+  return null;
+};
+
 const App = () => {
   const [showSplash, setShowSplash] = useState(true);
 
@@ -40,6 +106,7 @@ const App = () => {
   return (
     <Router>
       <ScrollToTop/>
+      <ContentLetterReveal />
       <Navigation/>
       <Suspense fallback={<PageLoader />}>
         <Routes>

@@ -1,0 +1,23 @@
+/* Controls should always render as whole words, never as animated letters. */
+.aura-hero-bottom .aura-primary-link {
+  width: auto;
+  min-width: 210px;
+  flex: 0 0 auto;
+}
+
+.aura-primary-link,
+.studio-button,
+.quote-modal button,
+button,
+a[role="button"] {
+  white-space: nowrap;
+  letter-spacing: normal;
+  word-spacing: normal;
+}
+
+@media (max-width: 768px) {
+  .aura-hero-bottom .aura-primary-link {
+    width: 100%;
+    min-width: 0;
+  }
+}

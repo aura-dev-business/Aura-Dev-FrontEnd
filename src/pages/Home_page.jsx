@@ -2,6 +2,7 @@ import React from 'react';
 import { ArrowUpRight, Code2, Layers3, Megaphone, Rocket, Sparkles, Workflow } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import './Home_page.css';
+import LetterReveal from '../components/LetterReveal';
 
 const services = [
   { number: '01', icon: Code2, title: 'Digital products', text: 'Websites and web applications that are fast, useful, and unmistakably yours.' },
@@ -14,7 +15,7 @@ const process = [['01', 'Understand', 'We listen closely to the challenge, peopl
 export default function Home() {
   return <main className="aura-home">
     <section className="aura-hero"><div className="aura-orb aura-orb-one" /><div className="aura-orb aura-orb-two" /><div className="aura-grid" />
-      <div className="aura-shell aura-hero-inner"><p className="aura-eyebrow"><Sparkles size={14} /> Independent digital studio</p><h1>We turn ambitious<br /><em>ideas into impact.</em></h1><div className="aura-hero-bottom"><p>Strategy, design, and development for businesses ready to make their next move count.</p><Link className="aura-primary-link" to="/contact">Start a project <ArrowUpRight size={18} /></Link></div></div>
+      <div className="aura-shell aura-hero-inner"><p className="aura-eyebrow"><Sparkles size={14} /> <LetterReveal text="Independent digital studio" delay={0}/></p><h1><LetterReveal text="We turn ambitious" delay={300}/><br /><em><LetterReveal text="ideas into impact." delay={840}/></em></h1><div className="aura-hero-bottom"><p>Strategy, design, and development for businesses ready to make their next move count.</p><Link className="aura-primary-link" to="/contact">Start a project <ArrowUpRight size={18} /></Link></div></div>
       <div className="aura-marquee"><div>Strategy <b>✦</b> Design <b>✦</b> Development <b>✦</b> Digital growth <b>✦</b> Strategy <b>✦</b> Design <b>✦</b> Development <b>✦</b> Digital growth <b>✦</b></div></div>
     </section>
     <section className="aura-intro aura-shell"><p className="aura-section-label">What we do <span>01</span></p><div className="aura-intro-copy"><h2>Digital should feel<br />as human as your <em>ambition.</em></h2><p>At AuraDev, we combine thoughtful creative direction with reliable technology. The result is work that looks sharp, works hard, and gives your team room to grow.</p></div></section>
