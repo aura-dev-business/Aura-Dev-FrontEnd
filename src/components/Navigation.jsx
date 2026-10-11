@@ -38,7 +38,7 @@ export default function Navigation() {
     <header className={`fixed inset-x-0 top-0 z-50 transition-all duration-300 ${scrolled ? 'bg-white/95 backdrop-blur-md border-b border-black/10' : 'bg-transparent'}`}>
       <nav className="mx-auto flex h-20 max-w-7xl items-center justify-between px-5 sm:px-8" aria-label="Main navigation">
         <Link to="/" className="flex items-center gap-2 text-gray-950" aria-label="AuraDev home">
-          <img src={logo} alt="" className="h-10 w-10 object-contain" />
+          <img src={logo} alt="AuraDev" className="h-10 w-10 object-contain" />
           <span className="leading-none"><strong className="block font-aspal text-2xl">AuraDev</strong><small className="text-[10px] text-gray-500">Build Your Digital Aura</small></span>
         </Link>
         <div className="hidden items-center gap-1 md:flex">

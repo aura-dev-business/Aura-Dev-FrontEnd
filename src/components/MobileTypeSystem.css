@@ -1,0 +1,140 @@
+/* Final mobile type scale: readable, compact, and consistent across every route. */
+@media (max-width: 768px) {
+  html {
+    -webkit-text-size-adjust: 100%;
+    text-size-adjust: 100%;
+  }
+
+  body {
+    font-size: 16px;
+  }
+
+  /* Keep the opening home experience complete within a phone viewport. */
+  .aura-hero {
+    min-height: 100svh !important;
+    display: flex;
+    align-items: center;
+  }
+
+  .aura-hero-inner {
+    width: 100%;
+    padding-top: 108px !important;
+    padding-bottom: 82px !important;
+  }
+
+  .aura-hero-bottom {
+    gap: 20px !important;
+  }
+
+  .aura-hero h1 {
+    font-size: clamp(2.65rem, 11.8vw, 4.1rem) !important;
+    line-height: 0.95 !important;
+    letter-spacing: -0.07em !important;
+    margin: 24px 0 30px !important;
+  }
+
+  .studio-hero h1,
+  .studio-title {
+    font-size: clamp(2.45rem, 10.8vw, 3.65rem) !important;
+    line-height: 0.98 !important;
+    letter-spacing: -0.06em !important;
+  }
+
+  .aura-home h2,
+  .studio-lead h2,
+  .studio-split h2,
+  .studio-contact-info h2 {
+    font-size: clamp(2rem, 8.9vw, 3rem) !important;
+    line-height: 1.02 !important;
+    letter-spacing: -0.055em !important;
+  }
+
+  .aura-footer h2 {
+    font-size: clamp(2rem, 8.8vw, 2.85rem) !important;
+    line-height: 1.03 !important;
+  }
+
+  .aura-hero-bottom p,
+  .studio-hero p,
+  .studio-lead p,
+  .studio-split p,
+  .aura-intro-copy > p,
+  .aura-proof-copy > p {
+    font-size: 1rem !important;
+    line-height: 1.65 !important;
+  }
+
+  .aura-service h3,
+  .studio-card h3,
+  .aura-process-row h3,
+  .studio-process-row h3 {
+    font-size: 1.25rem !important;
+    line-height: 1.15 !important;
+  }
+
+  .aura-service p,
+  .studio-card p,
+  .aura-process-row p,
+  .studio-process-row p {
+    font-size: 0.94rem !important;
+    line-height: 1.6 !important;
+  }
+
+  .aura-eyebrow {
+    font-size: 0.82rem !important;
+  }
+
+  .aura-section-label,
+  .studio-rule {
+    font-size: 0.67rem !important;
+  }
+
+  .aura-primary-link,
+  .studio-button,
+  .quote-modal button[type="submit"] {
+    min-height: 50px;
+    padding: 13px 20px !important;
+    font-size: 0.94rem !important;
+    line-height: 1.1;
+  }
+
+  .quote-modal h2 {
+    font-size: 1.8rem !important;
+    line-height: 1.08 !important;
+  }
+
+  .quote-modal header p,
+  .quote-modal label,
+  .quote-modal input,
+  .quote-modal textarea {
+    font-size: 0.94rem !important;
+  }
+
+  .quote-modal input,
+  .quote-modal textarea {
+    line-height: 1.5;
+  }
+}
+
+@media (max-width: 390px) {
+  .aura-hero-inner {
+    padding-top: 96px !important;
+    padding-bottom: 74px !important;
+  }
+
+  .aura-hero h1 {
+    font-size: 2.55rem !important;
+  }
+
+  .studio-hero h1,
+  .studio-title {
+    font-size: 2.35rem !important;
+  }
+
+  .aura-home h2,
+  .studio-lead h2,
+  .studio-split h2,
+  .studio-contact-info h2 {
+    font-size: 1.9rem !important;
+  }
+}

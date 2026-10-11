@@ -1,0 +1,11 @@
+/* Desktop hero: place the message beneath the fixed navigation rather than mid-screen. */
+@media (min-width: 769px) {
+  .aura-hero {
+    min-height: 100svh;
+    align-items: flex-start;
+  }
+
+  .aura-hero-inner {
+    padding-top: 158px;
+  }
+}
