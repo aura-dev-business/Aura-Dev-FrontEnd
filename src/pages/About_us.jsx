@@ -10,7 +10,7 @@ const values = [
 ];
 
 export default function About() {
-  return <main className="studio-page">
+  return <main className="studio-page" id="main-content" tabIndex="-1">
     <section className="studio-hero studio-grid about-hero">
       <div className="studio-shell">
         <p className="studio-kicker"><LetterReveal text="The studio behind the screen" delay={0}/></p>
