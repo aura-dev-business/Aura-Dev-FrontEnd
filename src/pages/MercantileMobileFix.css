@@ -1,0 +1,7 @@
+@media (max-width:767px){
+  .mercantile-case .oglas-work-hero{min-height:auto;padding-top:106px;padding-bottom:52px}
+  .mercantile-case .case-back{margin-bottom:22px}
+  .mercantile-case .oglas-work-hero p{max-width:100%;font-size:.83rem;line-height:1.45;overflow-wrap:anywhere}
+  .mercantile-case .oglas-work-hero h1{font-size:clamp(3.1rem,15vw,4.5rem);line-height:.82}
+  .mercantile-case .oglas-work-hero>div>span{margin-top:26px}
+}
