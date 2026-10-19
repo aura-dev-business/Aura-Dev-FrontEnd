@@ -21,15 +21,212 @@ import "./components/StudioOverrides.css";
 import "./components/TrustAnimations.css";
 import "./components/SlowMotion.css";
 import "./components/GlobalLetterReveal.css";
+
+// Hero-only word mask reveal. It is intentionally isolated from all other text.
+if (typeof window !== "undefined") {
+  const prepareHeroWordReveal = () => {
+    document.querySelectorAll("main h1").forEach((heading) => {
+      if (heading.dataset.wordMaskReady || !heading.textContent?.trim()) return;
+
+      if (window.location.pathname === "/" && heading.closest(".aura-hero-inner")) {
+        const hero = heading.closest(".aura-hero-inner");
+        heading.textContent = "We solve problems with creativity anywhere they exist, spanning advertising, brand strategy, experience, design, and much more.";
+        [...hero.querySelectorAll("p")].forEach((paragraph) => paragraph.remove());
+        [...hero.querySelectorAll("span, div")]
+          .filter((element) => element.children.length === 0 && element.textContent.trim().toLowerCase() === "independent digital studio")
+          .forEach((element) => element.remove());
+
+        let follow = hero.querySelector(".home-hero-follow");
+        if (!follow) {
+          follow = document.createElement("div");
+          follow.className = "home-hero-follow";
+          hero.appendChild(follow);
+        }
+        let copy = follow.querySelector(".home-hero-copy");
+        if (!copy) {
+          copy = document.createElement("p");
+          copy.className = "home-hero-copy";
+        }
+        copy.textContent = "Brand design, web design, digital marketing, UX/UI design and web development, from our studios in Dubai, Qatar, UK and Bangalore.";
+        const action = hero.querySelector("a, button");
+        action?.classList.add("home-hero-cta");
+        follow.replaceChildren(copy, ...(action ? [action] : []));
+
+        const forceStyle = (element, declarations) => {
+          if (!element) return;
+          Object.entries(declarations).forEach(([property, value]) => element.style.setProperty(property, value, "important"));
+        };
+        forceStyle(hero, {
+          position: "static",
+          display: "flex",
+          "flex-direction": "column",
+          "align-items": "stretch",
+          "min-height": "0",
+          padding: "10rem 4.15vw 4rem",
+        });
+        forceStyle(heading, {
+          position: "static",
+          inset: "auto",
+          transform: "none",
+          width: "100%",
+          "max-width": "1500px",
+          margin: "0",
+          padding: "0",
+        });
+        forceStyle(follow, {
+          position: "static",
+          inset: "auto",
+          display: "flex",
+          "flex-direction": "row",
+          "justify-content": "space-between",
+          "align-items": "center",
+          gap: "1.5rem",
+          width: "100%",
+          margin: "3.5rem 0 0",
+          padding: "0",
+        });
+        forceStyle(copy, {
+          position: "static",
+          inset: "auto",
+          display: "block",
+          "max-width": "780px",
+          margin: "0",
+          padding: "0",
+        });
+        forceStyle(action, {
+          position: "static",
+          inset: "auto",
+          display: "inline-flex",
+          margin: "0",
+        });
+        if (window.matchMedia("(max-width: 640px)").matches) {
+          forceStyle(hero, { padding: "7rem 1.25rem 3rem" });
+          forceStyle(follow, { "flex-direction": "column", "align-items": "flex-start" });
+        }
+      }
+
+      const headline = heading.textContent.trim();
+      heading.dataset.wordMaskReady = "true";
+      heading.setAttribute("aria-label", headline);
+      heading.replaceChildren();
+
+      const isHomeHeadline = window.location.pathname === "/" && heading.closest(".aura-hero-inner");
+      const headlineLines = isHomeHeadline
+        ? [
+            "We solve problems with creativity",
+            "anywhere they exist, spanning",
+            "advertising, brand strategy,",
+            "experience, design, and much more.",
+          ]
+        : [headline];
+      let wordIndex = 0;
+      headlineLines.forEach((line, lineIndex) => {
+        const lineElement = document.createElement("span");
+        lineElement.className = "hero-headline-line";
+        const words = line.split(/\s+/);
+        words.forEach((word, index) => {
+          const mask = document.createElement("span");
+          mask.className = "hero-word-mask";
+          const inner = document.createElement("span");
+          inner.className = "hero-word";
+          inner.style.setProperty("--i", wordIndex);
+          inner.setAttribute("aria-hidden", "true");
+          inner.textContent = word;
+          mask.appendChild(inner);
+          lineElement.appendChild(mask);
+          if (index < words.length - 1) lineElement.appendChild(document.createTextNode(" "));
+          wordIndex += 1;
+        });
+        heading.appendChild(lineElement);
+        if (lineIndex < headlineLines.length - 1) heading.appendChild(document.createTextNode(" "));
+      });
+
+      const hero = heading.closest(".aura-hero-inner, .studio-hero .studio-shell, .work-gallery-hero .studio-shell, section, main");
+      hero?.querySelectorAll(":scope > :not(h1)").forEach((item) => {
+        item.classList.add("hero-reveal-rest");
+      });
+    });
+  };
+
+  const scrollWordObserver = new IntersectionObserver((entries) => {
+    entries.forEach((entry) => {
+      if (!entry.isIntersecting) return;
+      entry.target.classList.add("scroll-word-visible");
+      scrollWordObserver.unobserve(entry.target);
+    });
+  }, { threshold: 0.12, rootMargin: "0px 0px -8% 0px" });
+
+  const scrollComponentObserver = new IntersectionObserver((entries) => {
+    entries.forEach((entry) => {
+      if (!entry.isIntersecting) return;
+      entry.target.classList.add("scroll-component-visible");
+      scrollComponentObserver.unobserve(entry.target);
+    });
+  }, { threshold: 0.08, rootMargin: "0px 0px -6% 0px" });
+
+  const prepareScrollWordReveal = () => {
+    document.querySelectorAll("main h2, main h3, main h4, main p, main li, footer h1, footer h2, footer h3, footer p, footer li").forEach((target) => {
+      if (target.dataset.scrollWordReady || target.closest(".aura-hero-inner") || target.children.length) return;
+      const copy = target.textContent?.trim();
+      if (!copy) return;
+
+      target.dataset.scrollWordReady = "true";
+      target.setAttribute("aria-label", copy);
+      target.replaceChildren();
+      const words = copy.split(/\s+/);
+      words.forEach((word, index) => {
+        const mask = document.createElement("span");
+        mask.className = "scroll-word-mask";
+        const inner = document.createElement("span");
+        inner.className = "scroll-word";
+        inner.style.setProperty("--i", index);
+        inner.setAttribute("aria-hidden", "true");
+        inner.textContent = word;
+        mask.appendChild(inner);
+        target.appendChild(mask);
+        if (index < words.length - 1) target.appendChild(document.createTextNode(" "));
+      });
+      target.classList.add("scroll-word-target");
+      scrollWordObserver.observe(target);
+    });
+  };
+
+  const prepareComponentReveal = () => {
+    const components = document.querySelectorAll("header, footer, main section, main article, main figure, main img, main button, main a, main [class*='card'], main [class*='Card']");
+    components.forEach((component, index) => {
+      if (component.dataset.componentRevealReady || component.closest("h1") || component.querySelector(":scope h1")) return;
+      component.dataset.componentRevealReady = "true";
+      component.style.setProperty("--component-i", index % 7);
+      component.classList.add("scroll-component");
+      scrollComponentObserver.observe(component);
+    });
+  };
+
+  const startHeroWordReveal = () => {
+    prepareHeroWordReveal();
+    prepareScrollWordReveal();
+    prepareComponentReveal();
+    new MutationObserver(() => {
+      prepareHeroWordReveal();
+      prepareScrollWordReveal();
+      prepareComponentReveal();
+    }).observe(document.body, { childList: true, subtree: true });
+  };
+
+  if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", startHeroWordReveal, { once: true });
+  else startHeroWordReveal();
+}
 import "./components/ResponsiveTypography.css";
 import "./components/MobilePolish.css";
 import "./components/MobileTypographyFix.css";
 import "./components/MobileLayout.css";
 import "./components/ControlReset.css";
+import "./components/LayoutStability.css";
 import "./components/MobileTypeSystem.css";
 import "./components/HomeHeroDesktop.css";
 import "./components/ResponsiveFoundation.css";
 import "./components/ScrollMotion.css";
+import "./components/HeroLayoutFix.css";
 import "./components/SculptGallery.css";
 import "./components/SculptGalleryTop.css";
 import "./components/SculptSlider.css";
@@ -57,32 +254,43 @@ const ContentLetterReveal = () => {
 
   useEffect(() => {
     const animateText = (target) => {
-      if (target.querySelector('.letter-reveal')) return;
-      if (target.dataset.letterAnimated) return;
+      if (target.dataset.wordAnimated) return;
+      // Character spans become flex/grid children and can distribute across the full row.
+      // Those small layout labels retain their regular reveal while headings keep the letter motion.
+      if (['flex', 'inline-flex', 'grid', 'inline-grid'].includes(window.getComputedStyle(target).display)) return;
       const text = target.textContent;
       if (!text?.trim()) return;
-      target.dataset.letterAnimated = 'true';
+      target.dataset.wordAnimated = 'true';
       target.setAttribute('aria-label', text);
       const textNodes = [];
       const walker = document.createTreeWalker(target, NodeFilter.SHOW_TEXT, {
         acceptNode: (node) => node.textContent.trim() ? NodeFilter.FILTER_ACCEPT : NodeFilter.FILTER_REJECT,
       });
       while (walker.nextNode()) textNodes.push(walker.currentNode);
-      let letterIndex = 0;
+      let wordIndex = 0;
       textNodes.forEach((node) => {
         const fragment = document.createDocumentFragment();
-        [...node.textContent].forEach((letter) => {
-          if (letter === ' ') {
-            fragment.appendChild(document.createTextNode(' '));
+        node.textContent.split(/(\s+)/).forEach((token) => {
+          if (!token) return;
+          if (/^\s+$/.test(token)) {
+            fragment.appendChild(document.createTextNode(token));
             return;
           }
-          const span = document.createElement('span');
-          span.className = 'global-letter';
-          span.setAttribute('aria-hidden', 'true');
-          span.textContent = letter;
-          span.style.setProperty('--letter-delay', `${letterIndex * 24}ms`);
-          fragment.appendChild(span);
-          letterIndex += 1;
+          const wordMask = document.createElement('span');
+          wordMask.className = 'global-word-mask';
+          const word = document.createElement('span');
+          word.className = 'global-word';
+          word.style.setProperty('--word-delay', `${wordIndex * 88}ms`);
+          [...token].forEach((letter) => {
+            const span = document.createElement('span');
+            span.className = 'global-letter';
+            span.setAttribute('aria-hidden', 'true');
+            span.textContent = letter;
+            word.appendChild(span);
+          });
+          wordMask.appendChild(word);
+          fragment.appendChild(wordMask);
+          wordIndex += 1;
         });
         node.replaceWith(fragment);
       });
@@ -97,10 +305,10 @@ const ContentLetterReveal = () => {
     }, { threshold: 0.16, rootMargin: '0px 0px -8% 0px' });
 
     const observeNewText = () => {
-    const targets = document.querySelectorAll('main h1, main h2, main h3, main h4, main p, main li, footer h2, footer p');
+      const targets = document.querySelectorAll('main h1, main h2, main h3, main h4, main h5, main h6, footer h1, footer h2, footer h3, footer h4, footer h5, footer h6');
       targets.forEach((target) => {
-        if (!target.dataset.letterObserved && !target.dataset.letterAnimated && !target.querySelector('.letter-reveal') && target.textContent?.trim()) {
-          target.dataset.letterObserved = 'true';
+        if (!target.dataset.wordObserved && !target.dataset.wordAnimated && target.textContent?.trim()) {
+          target.dataset.wordObserved = 'true';
           viewportObserver.observe(target);
         }
       });
@@ -120,7 +328,7 @@ const ScrollMotion = () => {
 
   useEffect(() => {
     document.documentElement.classList.add('aura-motion-ready');
-    const targetSelector = 'main .aura-intro, main .aura-services, main .aura-featured-work, main .aura-proof, main .aura-process, main .aura-contact-band, main .studio-section, main .studio-split, main .studio-contact, main .work-index-list, main .work-index-note, main .oglas-case, main .sculpt-store-links, main .oglas-details, main .oglas-feature-set, main .oglas-architecture, main .oglas-stack, main .oglas-contribution, main .oglas-next, footer .footer-shell';
+    const targetSelector = 'main .aura-intro, main .aura-services, main .aura-featured-work, main .aura-proof, main .aura-process, main .aura-contact-band, main .studio-section, main .studio-split, main .studio-contact, main .work-gallery-hero, main .work-index-list, main .work-index-note, main .oglas-case, main .sculpt-store-links, main .oglas-details, main .oglas-feature-set, main .oglas-architecture, main .oglas-stack, main .oglas-contribution, main .oglas-next, footer .footer-shell';
     const observer = new IntersectionObserver((entries) => {
       entries.forEach((entry) => {
         if (!entry.isIntersecting) return;
@@ -232,7 +440,6 @@ const App = () => {
     <Router>
       <a className="aura-skip-link" href="#main-content">Skip to content</a>
       <ScrollToTop/>
-      <ContentLetterReveal />
       <ScrollMotion />
       <Navigation/>
       <Suspense fallback={<PageLoader />}>

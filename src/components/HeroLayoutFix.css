@@ -1,0 +1,147 @@
+/* Final Home hero layout: all elements remain in normal document flow. */
+/* One shared desktop navbar height keeps the grid aligned on every route. */
+@media (min-width: 701px) {
+  header {
+    box-sizing: border-box !important;
+    height: 92px !important;
+    min-height: 92px !important;
+  }
+
+  /* Home and Work explicitly inherit the same bar treatment as the other pages. */
+  body:has(.aura-hero) header,
+  body.work-reference-mode header {
+    height: 92px !important;
+    min-height: 92px !important;
+    background: #fbfbf9 !important;
+    background-image: none !important;
+  }
+}
+
+/* Home and Work use local grid layers; keep their origin identical to the shared pages. */
+body:has(.aura-hero) .aura-hero,
+body.work-reference-mode .work-gallery-hero {
+  background-position: 0 0 !important;
+}
+
+/* Prevent first-scroll stalls caused by nested Home-page scroll containers. */
+html:has(.aura-hero),
+body:has(.aura-hero) {
+  height: auto !important;
+  min-height: 100% !important;
+  overflow-y: auto !important;
+  scroll-snap-type: none !important;
+}
+
+body:has(.aura-hero) #root,
+body:has(.aura-hero) main {
+  height: auto !important;
+  min-height: 0 !important;
+  overflow: visible !important;
+}
+
+body:has(.aura-hero) main,
+body:has(.aura-hero) main * {
+  scroll-snap-align: none !important;
+  scroll-snap-stop: normal !important;
+}
+
+.aura-hero {
+  min-height: 100svh !important;
+  display: flex !important;
+  flex-direction: column !important;
+  justify-content: center !important;
+}
+
+.aura-hero .aura-hero-inner {
+  box-sizing: border-box !important;
+  width: min(100%, 1760px) !important;
+  max-width: 1760px !important;
+  min-height: 0 !important;
+  margin: 0 auto !important;
+  padding: 10rem 4.15vw 4rem !important;
+  position: static !important;
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: stretch !important;
+  justify-content: flex-start !important;
+}
+
+.aura-hero .aura-hero-inner h1 {
+  position: static !important;
+  inset: auto !important;
+  width: 100% !important;
+  max-width: 1500px !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  font-family: "Inter Tight", "Archivo", "Hanken Grotesk", sans-serif !important;
+  font-size: clamp(2.2rem, 4.3vw, 5.1rem) !important;
+  font-style: normal !important;
+  font-weight: 800 !important;
+  line-height: .94 !important;
+  letter-spacing: -.04em !important;
+  text-align: left !important;
+  text-transform: uppercase !important;
+  text-wrap: balance !important;
+}
+
+.aura-hero .hero-headline-line {
+  display: block;
+  white-space: nowrap;
+}
+
+.aura-hero .home-hero-follow {
+  position: static !important;
+  inset: auto !important;
+  display: flex !important;
+  flex-direction: row !important;
+  justify-content: space-between !important;
+  align-items: center !important;
+  gap: 1.5rem !important;
+  width: 100% !important;
+  margin: 3.5rem 0 0 !important;
+  padding: 0 !important;
+}
+
+.aura-hero .home-hero-copy {
+  position: static !important;
+  inset: auto !important;
+  display: block !important;
+  width: auto !important;
+  max-width: 780px !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  color: color-mix(in srgb, currentColor 68%, transparent) !important;
+  font-family: Outfit, "Inter Tight", sans-serif !important;
+  font-size: clamp(1rem, 1.4vw, 1.5rem) !important;
+  font-style: normal !important;
+  font-weight: 400 !important;
+  line-height: 1.5 !important;
+}
+
+.aura-hero .home-hero-cta {
+  position: static !important;
+  inset: auto !important;
+  display: inline-flex !important;
+  flex: 0 0 auto !important;
+  align-items: center !important;
+  gap: .8rem !important;
+  margin: 0 !important;
+  padding: 1.4rem 2.6rem !important;
+  border-radius: 999px !important;
+}
+
+@media (max-width: 640px) {
+  .aura-hero .aura-hero-inner {
+    padding: 7rem 1.25rem 3rem !important;
+  }
+
+  .aura-hero .home-hero-follow {
+    flex-direction: column !important;
+    align-items: flex-start !important;
+  }
+
+  .aura-hero .hero-headline-line {
+    display: inline;
+    white-space: normal;
+  }
+}

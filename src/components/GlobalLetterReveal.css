@@ -1,1 +1,324 @@
-.global-letter{display:inline-block;opacity:0;transform:translateY(.65em);animation:global-letter-in .55s var(--letter-delay) cubic-bezier(.16,1,.3,1) forwards}@keyframes global-letter-in{to{opacity:1;transform:translateY(0)}}@media(prefers-reduced-motion:reduce){.global-letter{animation:none;opacity:1;transform:none}}
+/* Text reveal effects have been intentionally removed. Other UI motion remains unchanged. */
+.global-word,
+.global-word-mask,
+.global-letter {
+  animation: none !important;
+  opacity: 1 !important;
+  filter: none !important;
+  transform: none !important;
+}
+
+/* Keep all written content static while preserving component, hover and modal motion. */
+h1, h2, h3, h4, h5, h6, p, li, blockquote, figcaption,
+span:not(.hero-word):not(.hero-word-mask):not(.scroll-word):not(.scroll-word-mask),
+.char:not(.hero-word), .chars:not(.hero-word),
+.letter:not(.hero-word), .letters:not(.hero-word),
+.word:not(.hero-word), .words:not(.hero-word),
+[class*='char']:not(.hero-word):not(.scroll-word), [class*='letter']:not(.hero-word):not(.scroll-word), [class*='word']:not(.hero-word):not(.hero-word-mask):not(.scroll-word):not(.scroll-word-mask) {
+  animation: none !important;
+  transition: none !important;
+  animation-delay: 0ms !important;
+  transition-delay: 0ms !important;
+  opacity: 1 !important;
+  transform: none !important;
+  filter: none !important;
+  visibility: visible !important;
+}
+
+.aura-hero-inner,
+.studio-hero .studio-shell {
+  animation: none !important;
+}
+
+/* Hero and editorial copy containers: stop parent animations that can delay text. */
+main :is([class*='hero'], [class*='Hero'], [class*='intro'], [class*='Intro'], [class*='heading'], [class*='Heading'], [class*='headline'], [class*='Headline'], [class*='manifesto'], [class*='Manifesto']):has(:is(h1, h2, h3)) {
+  animation: none !important;
+  transition: none !important;
+  animation-delay: 0ms !important;
+  transition-delay: 0ms !important;
+  opacity: 1 !important;
+  transform: none !important;
+  filter: none !important;
+  visibility: visible !important;
+}
+
+/* The Work title and its supporting heading area must never wait for a page entrance. */
+.work-reference-mode .work-gallery-hero,
+.work-reference-mode .work-gallery-hero .studio-shell,
+.work-reference-mode .work-gallery-hero h1,
+.work-reference-mode .work-gallery-hero h2,
+.work-reference-mode .work-gallery-hero p,
+.work-reference-mode .work-gallery-rule {
+  animation: none !important;
+  transition: none !important;
+  animation-delay: 0ms !important;
+  transition-delay: 0ms !important;
+  opacity: 1 !important;
+  transform: none !important;
+  filter: none !important;
+  visibility: visible !important;
+}
+
+/* Hero-only masked word reveal. All other website text intentionally remains static. */
+main h1 .hero-word-mask {
+  display: inline-block;
+  overflow: hidden;
+  vertical-align: top;
+}
+
+main h1 .hero-word {
+  display: inline-block;
+  opacity: 1;
+  transform: translateY(110%);
+  animation: hero-word-rise .8s cubic-bezier(.22, 1, .36, 1) both;
+  animation-delay: calc(var(--i) * 60ms + var(--delay, 0s));
+  will-change: transform;
+}
+
+main .hero-reveal-rest {
+  opacity: 0;
+  transform: translateY(14px);
+  animation: hero-rest-rise .55s cubic-bezier(.22, 1, .36, 1) var(--delay, .95s) both;
+}
+
+@keyframes hero-word-rise {
+  to { transform: translateY(0); }
+}
+
+@keyframes hero-rest-rise {
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* Scroll-triggered editorial reveal for content below the hero. */
+.scroll-word-mask {
+  display: inline-block;
+  overflow: hidden;
+  vertical-align: top;
+}
+
+.scroll-word {
+  display: inline-block;
+  transform: translateY(110%);
+}
+
+.scroll-word-target.scroll-word-visible .scroll-word {
+  animation: scroll-word-rise .8s cubic-bezier(.22, 1, .36, 1) both;
+  animation-delay: calc(var(--i) * 45ms);
+}
+
+@keyframes scroll-word-rise {
+  to { transform: translateY(0); }
+}
+
+/* Visual components use the same scroll timing without changing their layout. */
+.scroll-component {
+  opacity: 0;
+  transform: translate3d(0, 28px, 0);
+}
+
+.scroll-component.scroll-component-visible {
+  animation: scroll-component-rise .7s cubic-bezier(.22, 1, .36, 1) calc(var(--component-i) * 70ms) both;
+}
+
+@keyframes scroll-component-rise {
+  to { opacity: 1; transform: translate3d(0, 0, 0); }
+}
+
+/* Home hero: reference geometry only. The site navbar and grid background are untouched. */
+.aura-hero-inner .home-hero-label-hidden { display: none !important; }
+
+@media (min-width: 701px) {
+  .aura-hero .aura-hero-inner {
+    position: relative;
+    display: block;
+    width: min(100% - 8vw, 1800px);
+    min-height: calc(100svh - 7.5rem);
+    margin-inline: auto;
+  }
+
+  .aura-hero .aura-hero-inner h1 {
+    position: absolute;
+    top: clamp(7rem, 17vh, 13rem);
+    left: 0;
+    width: 100%;
+    max-width: none;
+    margin: 0;
+    color: #111;
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: clamp(3.25rem, 4.55vw, 6.4rem);
+    font-style: normal;
+    font-weight: 800;
+    line-height: .96;
+    letter-spacing: -.07em;
+    text-transform: uppercase;
+  }
+
+  .aura-hero .aura-hero-inner .home-hero-copy {
+    display: block !important;
+    position: absolute !important;
+    bottom: clamp(2.5rem, 5vw, 4.5rem) !important;
+    left: 0 !important;
+    width: min(44rem, 48%) !important;
+    margin: 0 !important;
+    color: #666 !important;
+    font-size: clamp(1rem, 1.4vw, 1.55rem) !important;
+    font-style: normal !important;
+    line-height: 1.35 !important;
+  }
+
+  .aura-hero .aura-hero-inner .home-hero-cta {
+    position: absolute !important;
+    right: 0 !important;
+    bottom: clamp(2.5rem, 5vw, 4.5rem) !important;
+    margin: 0 !important;
+  }
+}
+
+@media (max-width: 700px) {
+  .aura-hero .aura-hero-inner h1 {
+    margin-top: 4rem;
+    font-size: clamp(2.65rem, 12vw, 4.4rem);
+    line-height: .96;
+    letter-spacing: -.065em;
+    text-transform: uppercase;
+  }
+
+  .aura-hero .aura-hero-inner .home-hero-copy {
+    margin-top: 3rem;
+    color: #666;
+  }
+
+  .aura-hero .aura-hero-inner .home-hero-cta {
+    margin-top: 1.5rem;
+  }
+}
+
+/* Home hero — normal-flow reference layout. */
+.aura-hero {
+  min-height: 100svh !important;
+  display: flex !important;
+  flex-direction: column !important;
+  justify-content: center !important;
+}
+
+.aura-hero .aura-hero-inner {
+  box-sizing: border-box;
+  width: min(100%, 1760px) !important;
+  max-width: 1760px !important;
+  min-height: 0 !important;
+  margin: 0 auto !important;
+  padding: 10rem 4.15vw 4rem !important;
+  position: static !important;
+  display: block !important;
+}
+
+.aura-hero .aura-hero-inner h1 {
+  position: static !important;
+  width: 100% !important;
+  max-width: 1500px !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  color: inherit;
+  font-family: "Inter Tight", "Archivo", "Hanken Grotesk", sans-serif !important;
+  font-size: clamp(2.2rem, 4.8vw, 5.55rem) !important;
+  font-style: normal !important;
+  font-weight: 800 !important;
+  line-height: .94 !important;
+  letter-spacing: -.04em !important;
+  text-align: left !important;
+  text-transform: uppercase !important;
+  text-wrap: balance;
+}
+
+.aura-hero .home-hero-follow {
+  display: flex !important;
+  justify-content: space-between !important;
+  align-items: center !important;
+  gap: 1.5rem !important;
+  margin-top: 3.5rem !important;
+}
+
+.aura-hero .home-hero-copy {
+  display: block !important;
+  position: static !important;
+  width: auto !important;
+  max-width: 780px !important;
+  margin: 0 !important;
+  color: color-mix(in srgb, currentColor 68%, transparent) !important;
+  font-family: Outfit, "Inter Tight", sans-serif !important;
+  font-size: clamp(1rem, 1.4vw, 1.5rem) !important;
+  font-style: normal !important;
+  font-weight: 400 !important;
+  line-height: 1.5 !important;
+}
+
+.aura-hero .home-hero-cta {
+  position: static !important;
+  display: inline-flex !important;
+  flex: 0 0 auto;
+  align-items: center;
+  gap: .8rem;
+  margin: 0 !important;
+  padding: 1.4rem 2.6rem !important;
+  border: 0 !important;
+  border-radius: 999px !important;
+  background: #fff !important;
+  color: #111 !important;
+  font-size: 1rem !important;
+  font-weight: 500 !important;
+  letter-spacing: .08em !important;
+  line-height: 1 !important;
+  text-transform: uppercase !important;
+  transition: transform .2s ease !important;
+}
+
+.aura-hero .home-hero-cta:hover {
+  transform: scale(1.03) !important;
+}
+
+.aura-hero .home-hero-cta:hover :is(svg, span:last-child) {
+  transform: translate(2px, -2px);
+}
+
+/* Navigation must always be static and immediately readable. */
+header.scroll-component,
+header.scroll-component.scroll-component-visible,
+header a,
+header .scroll-word-target,
+header .scroll-word-mask,
+header .scroll-word {
+  opacity: 1 !important;
+  transform: none !important;
+  filter: none !important;
+  visibility: visible !important;
+  animation: none !important;
+  transition: none !important;
+}
+
+header .scroll-word-mask { overflow: visible !important; }
+
+@media (max-width: 640px) {
+  .aura-hero .aura-hero-inner {
+    padding: 7rem 1.25rem 3rem !important;
+  }
+
+  .aura-hero .home-hero-follow {
+    flex-direction: column !important;
+    align-items: flex-start !important;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  main h1 .hero-word,
+  main .hero-reveal-rest,
+  .scroll-word-target .scroll-word,
+  .scroll-component,
+  .scroll-component.scroll-component-visible {
+    animation: none !important;
+    opacity: 1 !important;
+    transform: none !important;
+  }
+}
+
+
+
