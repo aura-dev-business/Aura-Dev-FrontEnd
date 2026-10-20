@@ -23,8 +23,9 @@ import "./components/SlowMotion.css";
 import "./components/GlobalLetterReveal.css";
 
 // Hero-only word mask reveal. It is intentionally isolated from all other text.
+let prepareHeroWordReveal = () => {};
 if (typeof window !== "undefined") {
-  const prepareHeroWordReveal = () => {
+  prepareHeroWordReveal = () => {
     document.querySelectorAll("main h1").forEach((heading) => {
       if (heading.dataset.wordMaskReady || !heading.textContent?.trim()) return;
 
@@ -204,13 +205,6 @@ if (typeof window !== "undefined") {
 
   const startHeroWordReveal = () => {
     prepareHeroWordReveal();
-    prepareScrollWordReveal();
-    prepareComponentReveal();
-    new MutationObserver(() => {
-      prepareHeroWordReveal();
-      prepareScrollWordReveal();
-      prepareComponentReveal();
-    }).observe(document.body, { childList: true, subtree: true });
   };
 
   if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", startHeroWordReveal, { once: true });
@@ -318,6 +312,19 @@ const ContentLetterReveal = () => {
     const mutationObserver = new MutationObserver(observeNewText);
     mutationObserver.observe(document.body, { childList: true, subtree: true });
     return () => { window.cancelAnimationFrame(frame); viewportObserver.disconnect(); mutationObserver.disconnect(); };
+  }, [location.pathname]);
+
+  return null;
+};
+
+// A single route-level hero setup replaces the old document-wide mutation
+// observers. It never listens to wheel/touch input or changes scroll state.
+const HeroSetup = () => {
+  const location = useLocation();
+
+  useEffect(() => {
+    const frame = window.requestAnimationFrame(() => prepareHeroWordReveal());
+    return () => window.cancelAnimationFrame(frame);
   }, [location.pathname]);
 
   return null;
@@ -440,7 +447,7 @@ const App = () => {
     <Router>
       <a className="aura-skip-link" href="#main-content">Skip to content</a>
       <ScrollToTop/>
-      <ScrollMotion />
+      <HeroSetup />
       <Navigation/>
       <Suspense fallback={<PageLoader />}>
         <Routes>

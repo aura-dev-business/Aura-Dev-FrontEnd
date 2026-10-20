@@ -1,5 +1,4 @@
 /* Case-study copy is editorial text, not the site's animated word-chip UI. */
-.case-study .scroll-word-target,
 .case-study .scroll-word-mask,
 .case-study .scroll-word,
 .case-study .global-word-mask,
@@ -20,15 +19,45 @@
   letter-spacing: inherit !important;
 }
 
+.case-study .scroll-word-target {
+  display: block !important;
+  overflow: visible !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+  transform: none !important;
+  opacity: 1 !important;
+  animation: none !important;
+}
+
+.case-study .case-study-outcomes article > span {
+  display: block !important;
+  margin: 0 0 2.2rem !important;
+}
+
+.case-study .case-study-outcomes h3 {
+  display: block !important;
+  margin: 0 0 .85rem !important;
+}
+
+.case-study .case-study-outcomes article > p {
+  display: block !important;
+  margin: 0 !important;
+}
+
 .case-study .case-study-summary > p {
   max-width: 980px;
   color: #171518;
-  font-family: "Inter Tight", "Archivo", "Hanken Grotesk", sans-serif !important;
-  font-size: clamp(2rem, 3.2vw, 4.1rem) !important;
-  font-weight: 650 !important;
-  line-height: .98 !important;
-  letter-spacing: -.06em !important;
+  font-family: Outfit, Inter, sans-serif !important;
+  font-size: clamp(1.7rem, 2.65vw, 3.35rem) !important;
+  font-weight: 700 !important;
+  line-height: .94 !important;
+  letter-spacing: -.065em !important;
   text-wrap: balance;
+  text-transform: none !important;
 }
 
 .case-study .case-study-summary > div {
@@ -49,6 +78,12 @@
   gap: 1rem !important;
 }
 
+.case-study .case-study-hero {
+  /* The navbar is fixed, so reserve exactly its height plus a modest gap. */
+  padding-top: calc(92px + clamp(1.75rem, 2.5vw, 3rem)) !important;
+  padding-bottom: clamp(2.5rem, 3vw, 3.5rem) !important;
+}
+
 .case-study .case-study-back {
   display: inline-flex !important;
   margin: 0 !important;
@@ -62,7 +97,19 @@
 }
 
 .case-study .case-study-hero h1 {
-  margin-top: clamp(3.5rem, 9vw, 8rem) !important;
+  margin-top: clamp(2rem, 3.5vw, 3.25rem) !important;
+  margin-bottom: 1rem !important;
+}
+
+/* Premium statement headings match the rounded Pearl & Oud display face. */
+.case-study .case-study-architecture h2,
+.case-study .case-study-contribution h2,
+.case-study .case-study-architecture h2 em {
+  font-family: Outfit, Inter, sans-serif !important;
+  font-style: normal !important;
+  font-weight: 700 !important;
+  letter-spacing: -.07em !important;
+  line-height: .88 !important;
 }
 
 .case-study-gallery > header,
