@@ -1,0 +1,146 @@
+/* Keep the dialog intro independent from the site's fixed-height headers. */
+.quote-overlay {
+  padding: max(16px, env(safe-area-inset-top)) 16px max(16px, env(safe-area-inset-bottom));
+}
+
+.quote-modal.quote-modal-panel {
+  display: block;
+  width: min(100%, 36rem);
+  max-height: calc(100vh - 32px) !important;
+  max-height: calc(100dvh - 32px - env(safe-area-inset-top) - env(safe-area-inset-bottom)) !important;
+  overscroll-behavior: contain;
+  scrollbar-gutter: stable;
+}
+
+.quote-modal .quote-modal-intro {
+  position: static;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  height: auto;
+  min-height: 0;
+  margin: 0;
+  padding: 34px 28px 28px;
+  border-bottom: 1px solid rgb(0 0 0 / 15%);
+  transform: none;
+  animation: none;
+}
+
+.quote-modal .quote-modal-intro > * {
+  position: static;
+  margin: 0;
+  transform: none;
+  animation: none;
+}
+
+.quote-modal .quote-modal-intro .quote-modal-eyebrow {
+  padding-right: 40px;
+  color: #6b7280;
+  font-size: 0.69rem;
+  font-weight: 700;
+  line-height: 1.6;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+
+.quote-modal .quote-modal-intro h2 {
+  color: #111;
+  font-size: clamp(1.8rem, 5vw, 2.25rem);
+  font-weight: 600;
+  line-height: 1.15;
+  letter-spacing: -0.04em;
+}
+
+.quote-modal .quote-modal-intro h2 em {
+  font-family: Georgia, serif;
+  font-weight: 400;
+}
+
+.quote-modal .quote-modal-intro .quote-modal-description {
+  color: #4b5563;
+  font-size: 0.95rem;
+  line-height: 1.6;
+}
+
+.quote-modal .quote-modal-form {
+  position: static;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 24px;
+  margin: 0;
+  padding: 28px;
+  background: #f8f8f6;
+  transform: none;
+}
+
+.quote-modal .quote-modal-field {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 6px;
+}
+
+.quote-modal .quote-modal-field label {
+  display: block;
+  color: #374151;
+  font-size: 0.9rem;
+  font-weight: 500;
+  line-height: 1.5;
+}
+
+.quote-modal .quote-modal-field :is(input, textarea) {
+  display: block;
+  width: 100%;
+  min-height: 48px;
+  margin: 0;
+  padding: 12px 0;
+  border: 0;
+  border-bottom: 1px solid #9ca3af;
+  border-radius: 0;
+  background: transparent;
+  color: #111;
+  font-size: 16px !important;
+  line-height: 1.5;
+}
+
+.quote-modal .quote-modal-field textarea {
+  resize: vertical;
+  min-height: 112px;
+}
+
+.quote-modal .quote-modal-field :is(input, textarea):focus-visible {
+  outline: 2px solid #9b5bd6;
+  outline-offset: 4px;
+  border-color: #111;
+}
+
+.quote-modal .quote-modal-close {
+  display: grid;
+  place-items: center;
+  width: 44px;
+  min-height: 44px;
+}
+
+.quote-modal .quote-modal-submit {
+  justify-self: start;
+  min-height: 48px;
+}
+
+.quote-modal :is(.quote-modal-close, .quote-modal-submit):focus-visible {
+  outline: 3px solid #9b5bd6;
+  outline-offset: 3px;
+}
+
+@media (max-width: 640px) {
+  .quote-modal .quote-modal-intro {
+    padding: 28px 22px 24px;
+  }
+
+  .quote-modal .quote-modal-form {
+    padding: 24px 22px;
+  }
+
+  .quote-modal .quote-modal-submit {
+    width: 100%;
+    justify-self: stretch;
+  }
+}
