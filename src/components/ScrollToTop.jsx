@@ -6,8 +6,8 @@ const ScrollToTop = () => {
   const { pathname } = useLocation();
 
   useEffect(() => {
-    // Scroll to top when route changes
-    window.scrollTo({ top: 0, left: 0, behavior: 'smooth' });
+    // Route resets should finish before the user's next scroll gesture.
+    window.scrollTo({ top: 0, left: 0, behavior: 'instant' });
   }, [pathname]);
 
   return null;

@@ -17,19 +17,60 @@
   }
 }
 
+/* The enquiry dialog also uses a semantic header.  It must never inherit the
+   fixed site-navigation height, otherwise its intro spills into the form. */
+.quote-modal > header {
+  box-sizing: border-box !important;
+  height: auto !important;
+  min-height: 0 !important;
+  position: static !important;
+  inset: auto !important;
+  transform: none !important;
+  animation: none !important;
+}
+
+.quote-modal > header h2 {
+  margin: 0 !important;
+  line-height: 1.05 !important;
+}
+
+.quote-modal > header p {
+  position: static !important;
+  display: block !important;
+  margin: 0.75rem 0 0 !important;
+  line-height: 1.5 !important;
+  transform: none !important;
+  animation: none !important;
+}
+
+.quote-modal > form {
+  position: static !important;
+  transform: none !important;
+}
+
+
 /* Home and Work use local grid layers; keep their origin identical to the shared pages. */
 body:has(.aura-hero) .aura-hero,
 body.work-reference-mode .work-gallery-hero {
   background-position: 0 0 !important;
 }
 
-/* Prevent first-scroll stalls caused by nested Home-page scroll containers. */
-html:has(.aura-hero),
+/* Keep the document as Home's only vertical scroll container. */
+html:has(.aura-hero) {
+  height: auto !important;
+  min-height: 100% !important;
+  overflow-x: clip !important;
+  overflow-y: auto !important;
+  scroll-snap-type: none !important;
+}
+
 body:has(.aura-hero) {
   height: auto !important;
   min-height: 100% !important;
-  overflow-y: auto !important;
-  scroll-snap-type: none !important;
+  /* Inline overflow locks from menus/dialogs must still be able to take effect. */
+  overflow-x: clip;
+  overflow-y: visible;
+  scroll-snap-type: none;
 }
 
 body:has(.aura-hero) #root,
