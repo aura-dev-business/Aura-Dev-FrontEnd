@@ -7,9 +7,9 @@ import QuoteModal from './QuoteComponent';
 
 const links = [
   { path: '/', label: 'Home' },
+  { path: '/about', label: 'About' },
   { path: '/services', label: 'Services' },
   { path: '/work', label: 'Work' },
-  { path: '/about', label: 'About' },
   { path: '/contact', label: 'Contact' },
 ];
 

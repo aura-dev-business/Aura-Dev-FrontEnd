@@ -34,7 +34,7 @@ export default function QuoteModal({ isOpen, onClose }) {
     setSubmitted(false);
     if (!apiBase) {
       setStatus('error');
-      setNotice('Contact delivery is not configured. Please email auradevbusiness@gmail.com directly.');
+      setNotice('Contact delivery is not configured. Please email adilcheerothattil@gmail.com directly.');
       return;
     }
     setStatus('submitting');

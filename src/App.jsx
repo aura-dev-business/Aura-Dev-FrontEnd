@@ -16,6 +16,7 @@ import TopButton from "./components/TopButton";
 const ContactPage = lazy(() => import("./pages/Contact_us"));
 import ScrollToTop from "./components/ScrollToTop";
 import WhatsAppButton from "./components/WhatsappButton";
+import SiteTextReveal from "./components/SiteTextReveal";
 const ServiceDetail = lazy(() => import("./components/ServiceDetail"));
 import "./components/StudioOverrides.css";
 import "./components/TrustAnimations.css";
@@ -448,6 +449,7 @@ const App = () => {
       <a className="aura-skip-link" href="#main-content">Skip to content</a>
       <ScrollToTop/>
       <HeroSetup />
+      <SiteTextReveal />
       <Navigation/>
       <Suspense fallback={<PageLoader />}>
         <Routes>

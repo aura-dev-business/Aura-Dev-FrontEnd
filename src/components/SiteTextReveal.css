@@ -1,0 +1,50 @@
+/* Word-by-word reveal for page content. Navigation, controls and forms are excluded. */
+main .site-word-mask,
+footer .site-word-mask {
+  display: inline-block;
+  overflow: hidden;
+  vertical-align: top;
+}
+
+main .site-word-target .site-word,
+footer .site-word-target .site-word {
+  display: inline-block;
+  transform: translateY(110%) !important;
+  will-change: transform;
+}
+
+main .site-word-target.site-word-visible .site-word-mask .site-word,
+footer .site-word-target.site-word-visible .site-word-mask .site-word {
+  animation: site-word-rise .72s cubic-bezier(.22, 1, .36, 1) both !important;
+  animation-delay: calc(var(--word-index) * 42ms) !important;
+}
+
+@keyframes site-word-rise {
+  to { transform: translateY(0); }
+}
+
+/* Case-study tags are styled as pills. Reveal wrappers inside summary copy
+   must never inherit that tag treatment. */
+.oglas-case-summary p .site-word-mask,
+.oglas-case-summary p .site-word,
+.case-study-summary > p .site-word-mask,
+.case-study-summary > p .site-word {
+  margin: 0 !important;
+  padding: 0 !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+  color: inherit !important;
+  font: inherit !important;
+  letter-spacing: inherit !important;
+  text-transform: inherit !important;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  main .site-word-target .site-word,
+  footer .site-word-target .site-word {
+    animation: none !important;
+    transform: none !important;
+  }
+}
