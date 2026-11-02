@@ -1,0 +1,74 @@
+.studio-form-success {
+  display: flex;
+  min-height: 27rem;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: center;
+  gap: 1rem;
+}
+
+.studio-form-success h3 {
+  margin: .5rem 0 0;
+  color: #171717;
+  font-size: clamp(2rem, 4vw, 3.2rem);
+  font-weight: 600;
+  letter-spacing: -.065em;
+  line-height: .9;
+}
+
+.studio-form-success p {
+  max-width: 26rem;
+  margin: 0 0 .8rem;
+  color: #666;
+  line-height: 1.6;
+}
+
+.contact-details {
+  display: grid;
+  gap: .8rem;
+  margin-top: 2.5rem;
+}
+
+.contact-detail {
+  display: grid;
+  grid-template-columns: 1.25rem minmax(0, 1fr);
+  gap: .85rem;
+  align-items: start;
+  padding: .95rem 0;
+  border-top: 1px solid #d7d5d1;
+  color: #625f62;
+}
+
+.contact-detail:last-child {
+  border-bottom: 1px solid #d7d5d1;
+}
+
+.contact-detail svg {
+  margin-top: .2rem;
+  color: #8d5fba;
+}
+
+.contact-detail div {
+  display: grid;
+  gap: .15rem;
+}
+
+.contact-detail span {
+  color: #777277;
+  font-size: .67rem;
+  font-weight: 700;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+}
+
+.contact-detail :is(a, p) {
+  margin: 0;
+  color: #1a191a;
+  font-size: 1rem;
+  line-height: 1.4;
+  text-decoration: none;
+}
+
+.contact-detail a:hover {
+  color: #8d5fba;
+}

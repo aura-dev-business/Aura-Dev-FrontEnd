@@ -1,0 +1,9 @@
+/* Compact mobile heroes for Services, About and Contact. Home and Work use
+   their own hero systems and are intentionally unaffected. */
+@media (max-width: 760px) {
+  .studio-page .studio-hero {
+    min-height: auto;
+    align-items: flex-start;
+    padding: 3rem 0 3.25rem;
+  }
+}

@@ -222,6 +222,7 @@ import "./components/HomeHeroDesktop.css";
 import "./components/ResponsiveFoundation.css";
 import "./components/ScrollMotion.css";
 import "./components/HeroLayoutFix.css";
+import "./components/StudioMobileHero.css";
 import "./components/SculptGallery.css";
 import "./components/SculptGalleryTop.css";
 import "./components/SculptSlider.css";

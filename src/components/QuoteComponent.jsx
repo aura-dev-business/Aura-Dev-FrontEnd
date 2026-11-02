@@ -11,7 +11,6 @@ export default function QuoteModal({ isOpen, onClose }) {
   const [status, setStatus] = useState('idle');
   const [notice, setNotice] = useState('');
   const [submitted, setSubmitted] = useState(false);
-  const apiBase = import.meta.env.VITE_API_BASE_URL;
   const reduceMotion = useReducedMotion();
 
   useEffect(() => {
@@ -32,17 +31,21 @@ export default function QuoteModal({ isOpen, onClose }) {
     event.preventDefault();
     setNotice('');
     setSubmitted(false);
-    if (!apiBase) {
-      setStatus('error');
-      setNotice('Contact delivery is not configured. Please email adilcheerothattil@gmail.com directly.');
-      return;
-    }
     setStatus('submitting');
     try {
-      const response = await fetch(`${apiBase}/api/contact`, {
+      const response = await fetch('https://formsubmit.co/ajax/auradevbusiness@gmail.com', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ ...form, subject: 'Quote request', service: 'Quote request' }),
+        headers: {
+          'Content-Type': 'application/json',
+          Accept: 'application/json',
+        },
+        body: JSON.stringify({
+          ...form,
+          _subject: `New AuraDev project enquiry from ${form.name}`,
+          _replyto: form.email,
+          _template: 'table',
+          _captcha: 'false',
+        }),
       });
       if (!response.ok) throw new Error('Request failed');
       setForm(emptyForm);

@@ -13,6 +13,10 @@ const excludedSelector = [
 
 function prepareText(target) {
   if (target.dataset.siteRevealReady || target.closest(excludedSelector)) return;
+  const display = window.getComputedStyle(target).display;
+  // Splitting direct text inside flex/grid labels turns every word into a layout item.
+  // Leave those compact labels static so their alignment is never altered.
+  if (['flex', 'inline-flex', 'grid', 'inline-grid'].includes(display)) return;
   const text = target.textContent?.trim();
   if (!text) return;
 
