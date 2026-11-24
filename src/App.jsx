@@ -17,6 +17,8 @@ const ContactPage = lazy(() => import("./pages/Contact_us"));
 import ScrollToTop from "./components/ScrollToTop";
 import WhatsAppButton from "./components/WhatsappButton";
 import SiteTextReveal from "./components/SiteTextReveal";
+import SEO from "./components/SEO";
+import NotFound from "./pages/NotFound";
 const ServiceDetail = lazy(() => import("./components/ServiceDetail"));
 import "./components/StudioOverrides.css";
 import "./components/TrustAnimations.css";
@@ -436,18 +438,10 @@ const SculptSliderMount = ({ mount, screens }) => {
 };
 
 const App = () => {
-  const [showSplash, setShowSplash] = useState(true);
-
-  useEffect(() => {
-    const splashTimer = window.setTimeout(() => setShowSplash(false), 3000);
-    return () => window.clearTimeout(splashTimer);
-  }, []);
-
-  if (showSplash) return <PageLoader />;
-
   return (
     <Router>
       <a className="aura-skip-link" href="#main-content">Skip to content</a>
+      <SEO />
       <ScrollToTop/>
       <HeroSetup />
       <SiteTextReveal />
@@ -467,7 +461,7 @@ const App = () => {
           <Route path="/Services" element={<Navigate replace to="/services" />} />
           <Route path="/About_us" element={<Navigate replace to="/about" />} />
           <Route path="/Contact" element={<Navigate replace to="/contact" />} />
-          <Route path="*" element={<Navigate replace to="/" />} />
+          <Route path="*" element={<NotFound />} />
         </Routes>
       </Suspense>
       <SculptGallery />
